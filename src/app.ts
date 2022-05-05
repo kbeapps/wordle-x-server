@@ -8,8 +8,12 @@ app.get('/', (req, res) => {
     return res.send('The horses are out of the barn.');
 });
 
+app.post('/api/data', (req, res) => {
+    console.log(req.body);
+});
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-    console.log('I can hear you...');
+    console.log(`Connection successful.  Port: ${port}`);
 });
