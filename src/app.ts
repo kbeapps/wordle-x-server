@@ -9,3 +9,5 @@ app.get('/', (req, res) => {
 app.listen(8080, () => {
     console.log('I can hear you...');
 });
+
+console.log('test')
