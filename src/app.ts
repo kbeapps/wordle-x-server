@@ -1,11 +1,27 @@
 import * as dotenv from 'dotenv';
-
-dotenv.config();
-
 import router from './routes/index';
+import db from './models';
 
-const port = process.env.PORT || 3000;
+const initServer = async () => {
+    dotenv.config();
 
-router.listen(process.env.PORT || 3000, () => {
-    console.log(`Connection successful.  Port: ${port}`);
-});
+    const port = process.env.PORT || 3000;
+
+    router.listen(process.env.PORT || 3000, () => {
+        console.log(`Connection successful.  Port: ${port}`);
+    });
+
+    try {
+        const connected = await db.mongoose
+            .connect(db.url);
+
+        if (connected) {
+            console.log('Database connection successful.');
+        };
+    } catch (err) {
+        console.log('error: ', err);
+        process.exit();
+    };
+};
+
+initServer();

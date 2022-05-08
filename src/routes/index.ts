@@ -12,5 +12,4 @@ router.use(express.json());
 router.use('/', homeRoutes);
 router.use('/auth', authRoutes);
 
-
 export default router;
