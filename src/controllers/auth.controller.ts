@@ -1,33 +1,53 @@
-import { Request, Response } from 'express';
-const db = require('../models');
-const User = db.user;
+import { BaseController } from './base.controller';
+import { Response, Request } from 'express';
+import { User } from '../models/user.model';
+import { UserDoc } from '../interfaces/user.interface';
 
-interface SignupResponse {
-    data: {
-        hasSucceeded: boolean,
-        message: string,
-        payload: object,
+export class AuthController extends BaseController {
+    constructor() {
+        super(new User());
     }
-};
 
-interface SignupRequest {
+    createFunction(req: Request, res: Response) {
+        // Add some conditional logic...
 
-}
+        const user = {
+            email: 'test@test.com',
+            username: 'test1241',
+            password: '23fsdfsdf'
+        };
 
-const signup = (req: Request<{ email: string }>, res: Response) => {
+        this.create(res, req.body);
+    }
 
-    const user = new User();
-    let email: string;
-    email = req.body.email;
+    async signup(req: Request, res: Response) {
+        console.log('signing up');
+
+        const user = {
+            email: 'test@test.com',
+            username: 'test1241',
+            password: '23fsdfsdf'
+        };
+
+        this.model.email = 'test@test.com';
 
 
 
+        // this.create(res, user);
 
-    const payload: object = {
+        return res.send(this.model);
 
     };
 
-    return res.send(payload);
-};
-
-export default { signup };
+    // async putFunction(req: Request, res: Response) {
+    //     try {
+    //         const doc = await this.model.findById<UserDoc>(req.params.id);
+    //         doc.email = req.body.email;
+    //         // doc.set('details.email', req.body.details.name);
+    //         await doc.save();
+    //         this.jsonRes(doc, res);
+    //     } catch (e) {
+    //         this.errRes(e, res, 'Failed');
+    //     }
+    // }
+}

@@ -1,6 +1,6 @@
 import dbConfig from '../config/db.config';
 import mongoose from 'mongoose';
-import User from './user.model';
+import { User } from './user.model';
 
 if (process.env.NODE_ENV === 'development') {
     let counter = 0;
