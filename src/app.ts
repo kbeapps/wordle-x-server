@@ -5,12 +5,6 @@ import db from './models';
 const initServer = async () => {
     dotenv.config();
 
-    const port = process.env.PORT || 3000;
-
-    router.listen(process.env.PORT || 3000, () => {
-        console.log(`Connection successful.  Port: ${port}`);
-    });
-
     try {
         const connected = await db.mongoose
             .connect(db.url);
@@ -22,6 +16,14 @@ const initServer = async () => {
         console.log('error: ', err);
         process.exit();
     };
+
+    const port = process.env.PORT || 3000;
+
+    router.listen(port, () => {
+        console.log(`Connection successful.  Port: ${port}`);
+    });
+
+
 };
 
 initServer();

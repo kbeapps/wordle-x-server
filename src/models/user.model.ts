@@ -1,18 +1,17 @@
-import { Schema, model } from 'mongoose';
-import { BaseModel } from './base.model';
-import { UserDoc } from '../interfaces/user.interface';
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
-// interface IUser {
-//     email: string;
-//     username: string;
-//     password: string;
-//     avatar?: string;
-//     games?: string[],
-//     friends?: string[],
-//     groups?: string[],
-// };
+export interface IUser {
+    email: string;
+    username: string;
+    password: string;
+    avatar?: string;
+    games?: string[],
+    friends?: string[],
+    groups?: string[],
+};
 
-const UserSchema = new Schema<UserDoc>({
+const UserSchema = new Schema<IUser>({
     email: { type: String, required: true, unique: true },
     username: { type: String, required: true, minLength: 5, maxLength: 16 },
     password: { type: String, required: true, minLength: 5 },
@@ -22,10 +21,6 @@ const UserSchema = new Schema<UserDoc>({
     groups: Array
 }, { timestamps: true });
 
-export class User extends BaseModel {
-    constructor() {
-        super(
-            model<UserDoc>('User', UserSchema)
-        );
-    }
-}
+const User = mongoose.model<IUser>('User', UserSchema);
+
+export default User;

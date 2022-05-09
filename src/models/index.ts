@@ -1,6 +1,5 @@
 import dbConfig from '../config/db.config';
 import mongoose from 'mongoose';
-import { User } from './user.model';
 
 if (process.env.NODE_ENV === 'development') {
     let counter = 0;
@@ -14,8 +13,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const db = {
     mongoose: mongoose,
-    url: dbConfig.url,
-    user: User,
+    url: dbConfig.url
 };
 
 export default db;
