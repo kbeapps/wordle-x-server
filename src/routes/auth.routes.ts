@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { authController } from '../controllers/controllers.module';
-
+const controller = require('../controllers/auth.controller');
+const validator = require('../middleware/validators/auth.validator');
 const router = Router();
 
-router.post('/signup', (req, res) => { authController.signup(req, res); });
+router.post('/signup', [validator.signup], controller.signup);
 
 export default router;
-
