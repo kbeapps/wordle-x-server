@@ -1,4 +1,4 @@
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 export interface INotification {
@@ -8,8 +8,9 @@ export interface INotification {
 
 const NotificationSchema = new Schema<INotification>({
     userId: { type: String, required: true },
-    message: { type: String, required: true } }, { timestamps: true });
+    message: { type: String, required: true }
+}, { timestamps: true });
 
-    const Notification = mongoose.model<INotification>('Notification', NotificationSchema);
+const Notification = mongoose.model<INotification>('Notification', NotificationSchema);
 
-    export default Notification;
+export default Notification;
