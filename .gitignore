@@ -42,3 +42,5 @@ web_modules/
 /config
 config/
 config.js
+
+Notes.md

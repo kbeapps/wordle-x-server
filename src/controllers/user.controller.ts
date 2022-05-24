@@ -11,26 +11,28 @@ const get = async (key: string, value: string) => {
     query[key] = value;
 
     try {
-    return await User.findOne(query);
-    } catch(error) {
+        return await User.findOne(query);
+    } catch (error) {
         console.log(error);
     }
 };
 
 
 const create = async (email: string, password: string, username: string) => {
-        const user = new User({
-            email: email,
-            password: password,
-            username: username
-        });
-    
+    const user = new User({
+        email: email,
+        password: password,
+        username: username
+    });
+
     try {
-        return await user.save();
-    } catch(error) {
+        const res = await user.save();
+        return res;
+    } catch (error) {
         console.log(error);
+        return error;
     }
-  
+
 };
 
 
