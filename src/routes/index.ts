@@ -13,3 +13,4 @@ router.use('/', homeRoutes);
 router.use('/auth', authRoutes);
 
 module.exports = router;
+export default router;
