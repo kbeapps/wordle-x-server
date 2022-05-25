@@ -10,17 +10,7 @@ const testUser = {
 };
 
 beforeAll(async () => {
-    try {
-        const connected = await db.mongoose
-            .connect(db.url);
-
-        if (connected) {
-            console.log('Database connection successful.');
-        };
-    } catch (err) {
-        console.log('error: ', err);
-        process.exit();
-    };
+    await db.mongoose.connect(db.url);
 });
 
 describe('POST /auth/signup', () => {
