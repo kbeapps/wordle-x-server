@@ -3,8 +3,8 @@ const request = require('supertest');
 import db from '../../src/models';
 import Notification from '../../src/models/notification.model';
 
-const testNotification = {
-    _id: '628ebd2b3f7971736fce97bb',
+let testNotification = {
+    _id: null,
     message: 'test message',
 };
 
@@ -14,10 +14,13 @@ beforeAll(async () => {
 
 describe('POST /notification/create', () => {
     const route = '/notification/create';
-    describe('given a userId & message', () => {
+    describe('given a notificationId & message', () => {
         test('should respond with status 200', async () => {
             const res = await request(router).post(route).send(testNotification);
             expect(res.statusCode).toBe(200);
+            if (res) {
+                testNotification._id = res._id;
+            }
         });
     });
 
@@ -33,9 +36,9 @@ describe('POST /notification/create', () => {
 
 describe('GET /notification/get', () => {
     const route = '/notification/get';
-    describe('given a userId', () => {
+    describe('given a notificationId', () => {
         test('should respond with status 200', async () => {
-            const res = await request(router).post(route).send(testNotification);
+            const res = await request(router).post(route).send({ _id: testNotification._id });
             expect(res.statusCode).toBe(200);
         });
     });
