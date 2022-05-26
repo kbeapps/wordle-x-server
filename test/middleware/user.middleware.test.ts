@@ -4,13 +4,8 @@ import { Hmac } from 'crypto';
 import db from '../../src/models';
 import User from '../../src/models/user.model';
 
-let createdUser = {
-    _id: null,
-    email: null,
-    username: null
-};
-
-const testUser = {
+let testUser = {
+    _id: '',
     email: 'usermidtest@test.com',
     username: 'usermidtest',
     password: 'test123'
@@ -18,7 +13,11 @@ const testUser = {
 
 beforeAll(async () => {
     await db.mongoose.connect(db.url);
-    createdUser = await request(router).post('/auth/signin').send(testUser);
+    testUser = await request(router).post('/auth/signin').send({
+        email: testUser.email,
+        username: testUser.username,
+        password: testUser.password
+    });
 });
 
 describe('GET /user/get', () => {
@@ -26,28 +25,28 @@ describe('GET /user/get', () => {
 
     describe('Given a User ID', () => {
         test('Should respond with status 200', async () => {
-            const res = await request(router).get(route).send(createdUser._id);
+            const res = await request(router).get(route).send({ _id: testUser._id });
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe('Given a User Email', () => {
         test('Should respond with status 200', async () => {
-            const res = await request(router).get(route).send(createdUser.email);
+            const res = await request(router).get(route).send({ email: testUser.email });
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe('Given a Username', () => {
         test('Should respond with status 200', async () => {
-            const res = await request(router).get(route).send(createdUser.username);
+            const res = await request(router).get(route).send({ username: testUser.username });
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe('Missing information', () => {
         test('Should respond with status 400', async () => {
-            const res = await request(router).get(route).send(testUser);
+            const res = await request(router).get(route).send();
             expect(res.statusCode).toBe(400);
         });
     });
@@ -56,18 +55,18 @@ describe('GET /user/get', () => {
 describe('POST /user/update', () => {
     const route = '/user/update';
 
-    describe('Given a username', () => {
+    describe('Given a username and User ID', () => {
         test('Should respond with status 200', async () => {
             testUser.username = 'usermidtestChanged';
 
-            const res = await request(router).post(route).send(testUser.username);
+            const res = await request(router).post(route).send({ _id: testUser._id, username: testUser.username });
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe('Missing information', () => {
         test('Should respond with status 400', async () => {
-            const res = await request(router).get(route).send(testUser);
+            const res = await request(router).get(route).send({ _id: testUser._id });
             expect(res.statusCode).toBe(400);
         });
     });
@@ -78,20 +77,20 @@ describe('DELETE /user/remove', () => {
 
     describe('Given a User ID', () => {
         test('Should respond with status 200', async () => {
-            const res = await request(router).post(route).send(createdUser._id);
+            const res = await request(router).post(`${route}/${testUser._id}`).send();
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe('Missing information', () => {
         test('Should respond with status 400', async () => {
-            const res = await request(router).get(route).send(testUser);
+            const res = await request(router).get(route).send();
             expect(res.statusCode).toBe(400);
         });
     });
 });
 
 afterAll(async () => {
-    await User.deleteOne({ email: 'usermidtest@test.com' });
+    await User.deleteOne({ email: testUser.email });
     await db.mongoose.connection.close();
 });
