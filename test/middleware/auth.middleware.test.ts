@@ -24,10 +24,11 @@ describe('POST /auth/signup', () => {
 
     describe('something is missing', () => {
         test('should respond with status 400', async () => {
-            const res = await request(router).post('/auth/signup').send({
+            const wrongUser = {
                 email: testUser.email,
                 username: testUser.username
-            });
+            };
+            const res = await request(router).post('/auth/signup').send(wrongUser);
             expect(res.statusCode).toBe(400);
         });
     });

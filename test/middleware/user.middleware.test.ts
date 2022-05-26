@@ -17,8 +17,8 @@ const testUser = {
 };
 
 beforeAll(async () => {
-        const connected = await db.mongoose.connect(db.url);
-        createdUser = await request(router).post('/auth/signin').send(testUser);
+    await db.mongoose.connect(db.url);
+    createdUser = await request(router).post('/auth/signin').send(testUser);
 });
 
 describe('GET /user/get', () => {
@@ -59,7 +59,7 @@ describe('POST /user/update', () => {
     describe('Given a username', () => {
         test('Should respond with status 200', async () => {
             testUser.username = 'usermidtestChanged';
-    
+
             const res = await request(router).post(route).send(testUser.username);
             expect(res.statusCode).toBe(200);
         });

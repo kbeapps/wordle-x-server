@@ -16,19 +16,14 @@ const testUser = {
     password: 'test123'
 };
 
-let createdGroup = {
-    _id: null,
-    groupName: null,
-    members: null
-};
-
-const testGroup = {
+let testGroup = {
+    _id: '',
     groupName: 'testGroup',
-    members: ['']
+    members: ['628ebd2b3f7971736fce97bb']
 };
 
 beforeAll(async () => {
-    const connected = await db.mongoose.connect(db.url);
+    await db.mongoose.connect(db.url);
     createdUser = await request(router).post('/auth/signin').send(testUser);
 });
 
@@ -37,14 +32,23 @@ describe('POST /group/create', () => {
 
     describe('Given a Group Name and array of Member IDs', () => {
         test('Should respond with status 200', async () => {
-            const res = await request(router).get(route).send(testGroup);
+            const res = await request(router).get(route).send({
+                groupName: testGroup.groupName,
+                members: testGroup.members
+            });
             expect(res.statusCode).toBe(200);
+            if (res) {
+                testGroup = res;
+            };
         });
     });
 
     describe('Missing information', () => {
         test('Should respond with status 400', async () => {
-            const res = await request(router).get(route).send(testGroup);
+            const wrongGroup = {
+                groupName: 'wrong name'
+            };
+            const res = await request(router).get(route).send(wrongGroup);
             expect(res.statusCode).toBe(400);
         });
     });
@@ -55,14 +59,14 @@ describe('GET /group/get', () => {
 
     describe('Given a Group ID', () => {
         test('Should respond with status 200', async () => {
-            const res = await request(router).get(route).send(createdGroup._id);
+            const res = await request(router).get(route).send({ _id: testGroup._id });
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe('Missing information', () => {
         test('Should respond with status 400', async () => {
-            const res = await request(router).get(route).send(createdGroup._id);
+            const res = await request(router).get(route).send();
             expect(res.statusCode).toBe(400);
         });
     });
@@ -74,24 +78,22 @@ describe('POST /group/update', () => {
     describe('Given a group name', () => {
         test('Should respond with status 200', async () => {
             testGroup.groupName = 'testGroupChanged';
-    
-            const res = await request(router).post(route).send(testGroup.groupName);
+            const res = await request(router).post(route).send({ groupName: testGroup.groupName });
             expect(res.statusCode).toBe(200);
         });
     });
 
-    describe('Given a member ID', () => {
+    describe('Given a groupId, members', () => {
         test('Should respond with status 200', async () => {
             testGroup.members.push(createdUser._id);
-    
-            const res = await request(router).post(route).send(testGroup.members);
+            const res = await request(router).post(route).send({ _id: testGroup._id, members: testGroup.members });
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe('Missing information', () => {
         test('Should respond with status 400', async () => {
-            const res = await request(router).get(route).send(testUser);
+            const res = await request(router).get(route).send({ _id: testGroup._id });
             expect(res.statusCode).toBe(400);
         });
     });
@@ -100,23 +102,23 @@ describe('POST /group/update', () => {
 describe('DELETE /group/remove', () => {
     const route = '/group/remove';
 
-    describe('Given a Group ID', () => {
+    describe('Given a Group ID in Params', () => {
         test('Should respond with status 200', async () => {
-            const res = await request(router).post(route).send(createdGroup._id);
+            const res = await request(router).post(`${route}/${testGroup._id}`).send();
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe('Missing information', () => {
         test('Should respond with status 400', async () => {
-            const res = await request(router).get(route).send(createdGroup._id);
+            const res = await request(router).get(route).send();
             expect(res.statusCode).toBe(400);
         });
     });
 });
 
 afterAll(async () => {
-    await Group.deleteOne({ _id: createdGroup._id });
-    await User.deleteOne({ _id: createdUser._id });
+    await Group.deleteOne({ _id: testGroup._id });
+    await User.deleteOne({ _id: testGroup._id });
     await db.mongoose.connection.close();
 });
