@@ -1,22 +1,12 @@
-import { Response, Request } from 'express';
 import User from '../models/user.model';
 
-// Figure out search criteria to pass in instead of Stuff
-const get = async (key: string, value: string) => {
-    interface IQuery {
-        [key: string]: string
-    }
-
-    let query: IQuery = {};
-    query[key] = value;
-
+const get = async (query: object) => {
     try {
         return await User.findOne(query);
     } catch (error) {
         console.log(error);
-    }
+    };
 };
-
 
 const create = async (email: string, password: string, username: string) => {
     const user = new User({
@@ -31,19 +21,27 @@ const create = async (email: string, password: string, username: string) => {
     } catch (error) {
         console.log(error);
         return error;
-    }
-
+    };
 };
 
-
-const update = async (req: Request, res: Response) => {
-
+const update = async (_id: string, query: object) => {
+    try {
+        return await User.findByIdAndUpdate(
+            _id, query, { new: true }
+        );
+    } catch (error) {
+        console.log(error);
+    };
 };
 
-const remove = async (req: Request, res: Response) => {
-
+const remove = async (_id: string) => {
+    try {
+        return await User.findByIdAndRemove(_id);
+    } catch (error) {
+        console.log(error);
+    };
 };
 
 export default {
-    create, get
+    create, get, update, remove
 };
