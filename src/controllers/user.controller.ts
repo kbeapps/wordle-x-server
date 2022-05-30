@@ -5,6 +5,7 @@ const get = async (query: object) => {
         return await User.findOne(query);
     } catch (error) {
         console.log(error);
+        throw new Error();
     };
 };
 
@@ -19,7 +20,7 @@ const create = async (email: string, password: string, username: string) => {
         return await user.save();
     } catch (error) {
         console.log(error);
-        return error;
+        throw new Error();
     };
 };
 
@@ -30,6 +31,7 @@ const update = async (_id: string, query: object) => {
         );
     } catch (error) {
         console.log(error);
+        throw new Error();
     };
 };
 
@@ -38,6 +40,7 @@ const remove = async (_id: string) => {
         return await User.findByIdAndRemove(_id);
     } catch (error) {
         console.log(error);
+        throw new Error();
     };
 };
 
