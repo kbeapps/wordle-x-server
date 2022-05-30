@@ -16,10 +16,10 @@ const getAll = async (ownerId: string) => {
     };
 };
 
-const create = async (name: string, owner: string, players: string[], wordHistory: string[], type: string, winCondition: string, wordSize: string, theme?: string) => {
+const create = async (name: string, ownerId: string, players: string[], wordHistory: string[], type: string, winCondition: string, wordSize: string, theme?: string) => {
     const game = new Game({
         name: name,
-        owner: owner,
+        ownerId: ownerId,
         players: players,
         wordHistory: wordHistory,
         boards: [],
