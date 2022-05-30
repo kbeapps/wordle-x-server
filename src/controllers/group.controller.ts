@@ -16,8 +16,9 @@ const getAll = async (userId: string) => {
     };
 };
 
-const create = async (groupName: string, members: string[]) => {
+const create = async (owner: string, groupName: string, members: string[]) => {
     const group = new Group({
+        owner: owner,
         groupName: groupName,
         members: members
     });
