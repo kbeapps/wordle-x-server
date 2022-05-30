@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 export interface IGame {
     name: string;
+    owner: string;
     players: string[];
     wordHistory: string[];
     boards?: object[];
@@ -14,6 +15,7 @@ export interface IGame {
 
 const GameSchema = new Schema<IGame>({
     name: { type: String, required: true, unique: true, minLength: 2, maxLength: 16 },
+    owner: { type: String, required: true },
     players: { type: [String], required: true, min: 1, max: 20 },
     wordHistory: { type: [String], required: true, min: 1, max: 365 },
     boards: { type: [Object] },

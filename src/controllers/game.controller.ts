@@ -8,9 +8,18 @@ const get = async (query: object) => {
     };
 };
 
-const create = async (name: string, players: string[], wordHistory: string[], type: string, winCondition: string, wordSize: string, theme?: string) => {
+const getAll = async (ownerId: string) => {
+    try {
+        return await Game.find({ ownerId: ownerId });
+    } catch (error) {
+        console.log(error);
+    };
+};
+
+const create = async (name: string, owner: string, players: string[], wordHistory: string[], type: string, winCondition: string, wordSize: string, theme?: string) => {
     const game = new Game({
         name: name,
+        owner: owner,
         players: players,
         wordHistory: wordHistory,
         boards: [],
@@ -51,5 +60,5 @@ const remove = async (_id: string) => {
 };
 
 export default {
-    create, get, update, remove
+    create, get, getAll, update, remove
 };
