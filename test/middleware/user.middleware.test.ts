@@ -1,6 +1,5 @@
 const router = require('../../src/routes');
 const request = require('supertest');
-import { Hmac } from 'crypto';
 import db from '../../src/models';
 import User from '../../src/models/user.model';
 
