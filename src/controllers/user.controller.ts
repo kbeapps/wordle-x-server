@@ -16,8 +16,7 @@ const create = async (email: string, password: string, username: string) => {
     });
 
     try {
-        const res = await user.save();
-        return res;
+        return await user.save();
     } catch (error) {
         console.log(error);
         return error;
