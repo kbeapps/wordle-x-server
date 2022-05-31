@@ -3,16 +3,16 @@ import Group from '../models/group.model';
 const get = async (query: object) => {
     try {
         return await Group.findOne(query);
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
     };
 };
 
 const getAll = async (userId: string) => {
     try {
         return await Group.find({ members: userId });
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
     };
 };
 
@@ -25,8 +25,8 @@ const create = async (ownerId: string, groupName: string, members: string[]) => 
 
     try {
         return await group.save();
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
     };
 };
 
@@ -35,16 +35,16 @@ const update = async (_id: string, query: object) => {
         return await Group.findByIdAndUpdate(
             _id, query, { new: true }
         );
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
     }
 };
 
 const remove = async (_id: string) => {
     try {
         return await Group.findByIdAndRemove(_id);
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
     }
 };
 
