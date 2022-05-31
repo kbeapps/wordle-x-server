@@ -23,7 +23,7 @@ const update = async (req: Request, res: Response) => {
 
 const remove = async (req: Request, res: Response) => {
     try {
-        const user = await controller.remove(req.params._id);
+        await controller.remove(req.params._id);
 
         return res.status(200).send();
     } catch (err) {
