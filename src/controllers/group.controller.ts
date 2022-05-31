@@ -5,6 +5,7 @@ const get = async (query: object) => {
         return await Group.findOne(query);
     } catch (err) {
         console.log(err);
+        throw new Error();
     };
 };
 
@@ -13,6 +14,7 @@ const getAll = async (userId: string) => {
         return await Group.find({ members: userId });
     } catch (err) {
         console.log(err);
+        throw new Error();
     };
 };
 
@@ -27,6 +29,7 @@ const create = async (ownerId: string, groupName: string, members: string[]) => 
         return await group.save();
     } catch (err) {
         console.log(err);
+        throw new Error();
     };
 };
 
@@ -37,6 +40,7 @@ const update = async (_id: string, query: object) => {
         );
     } catch (err) {
         console.log(err);
+        throw new Error();
     }
 };
 
@@ -45,6 +49,7 @@ const remove = async (_id: string) => {
         return await Group.findByIdAndRemove(_id);
     } catch (err) {
         console.log(err);
+        throw new Error();
     }
 };
 

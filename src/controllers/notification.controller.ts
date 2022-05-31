@@ -5,6 +5,7 @@ const getAll = async (userId: string) => {
         return await Notification.find({ userId: userId });
     } catch (err) {
         console.log(err);
+        throw new Error();
     };
 };
 
@@ -18,6 +19,7 @@ const create = async (userId: string, message: string) => {
         return await notification.save();
     } catch (err) {
         console.log(err);
+        throw new Error();
     };
 };
 
@@ -26,6 +28,7 @@ const remove = async (_id: string) => {
         return await Notification.findByIdAndRemove(_id);
     } catch (err) {
         console.log(err);
+        throw new Error();
     };
 };
 
@@ -34,6 +37,7 @@ const removeAll = async (userId: string) => {
         return await Notification.deleteMany({ userId: userId });
     } catch (err) {
         console.log(err);
+        throw new Error();
     };
 };
 
