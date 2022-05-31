@@ -1,14 +1,5 @@
 import User from '../models/user.model';
 
-const get = async (query: object) => {
-    try {
-        return await User.findOne(query);
-    } catch (err) {
-        console.log(err);
-        throw new Error();
-    };
-};
-
 const create = async (email: string, password: string, username: string) => {
     const user = new User({
         email: email,
@@ -18,6 +9,15 @@ const create = async (email: string, password: string, username: string) => {
 
     try {
         return await user.save();
+    } catch (err) {
+        console.log(err);
+        throw new Error();
+    };
+};
+
+const get = async (query: object) => {
+    try {
+        return await User.findOne(query);
     } catch (err) {
         console.log(err);
         throw new Error();

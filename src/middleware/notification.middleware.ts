@@ -1,21 +1,21 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/notification.controller';
 
-const getAll = async (req: Request, res: Response) => {
-    try {
-        const notifications = await controller.getAll(req.params.userId);
-
-        return res.status(200).send(notifications);
-    } catch (err) {
-        return res.status(500).send(err);
-    };
-};
-
 const create = async (req: Request, res: Response) => {
     try {
         const notification = await controller.create(req.body.userId, req.body.message);
 
         return res.status(200).send(notification);
+    } catch (err) {
+        return res.status(500).send(err);
+    };
+};
+
+const getAll = async (req: Request, res: Response) => {
+    try {
+        const notifications = await controller.getAll(req.params.userId);
+
+        return res.status(200).send(notifications);
     } catch (err) {
         return res.status(500).send(err);
     };
@@ -42,5 +42,5 @@ const removeAll = async (req: Request, res: Response) => {
 };
 
 export {
-    getAll, create, remove, removeAll
+    create, getAll, remove, removeAll
 };

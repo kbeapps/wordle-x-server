@@ -1,23 +1,5 @@
 import Game from '../models/game.model';
 
-const get = async (query: object) => {
-    try {
-        return await Game.findOne(query);
-    } catch (err) {
-        console.log(err);
-        throw new Error();
-    };
-};
-
-const getAll = async (ownerId: string) => {
-    try {
-        return await Game.find({ ownerId: ownerId });
-    } catch (err) {
-        console.log(err);
-        throw new Error();
-    };
-};
-
 const create = async (name: string, ownerId: string, players: string[], wordHistory: string[], type: string, winCondition: string, wordSize: string, theme?: string) => {
     const game = new Game({
         name: name,
@@ -37,6 +19,24 @@ const create = async (name: string, ownerId: string, players: string[], wordHist
 
     try {
         return await game.save();
+    } catch (err) {
+        console.log(err);
+        throw new Error();
+    };
+};
+
+const get = async (query: object) => {
+    try {
+        return await Game.findOne(query);
+    } catch (err) {
+        console.log(err);
+        throw new Error();
+    };
+};
+
+const getAll = async (ownerId: string) => {
+    try {
+        return await Game.find({ ownerId: ownerId });
     } catch (err) {
         console.log(err);
         throw new Error();

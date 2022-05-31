@@ -1,5 +1,20 @@
 import Group from '../models/group.model';
 
+const create = async (ownerId: string, groupName: string, members: string[]) => {
+    const group = new Group({
+        ownerId: ownerId,
+        groupName: groupName,
+        members: members
+    });
+
+    try {
+        return await group.save();
+    } catch (err) {
+        console.log(err);
+        throw new Error();
+    };
+};
+
 const get = async (query: object) => {
     try {
         return await Group.findOne(query);
@@ -12,21 +27,6 @@ const get = async (query: object) => {
 const getAll = async (userId: string) => {
     try {
         return await Group.find({ members: userId });
-    } catch (err) {
-        console.log(err);
-        throw new Error();
-    };
-};
-
-const create = async (ownerId: string, groupName: string, members: string[]) => {
-    const group = new Group({
-        ownerId: ownerId,
-        groupName: groupName,
-        members: members
-    });
-
-    try {
-        return await group.save();
     } catch (err) {
         console.log(err);
         throw new Error();
@@ -54,5 +54,5 @@ const remove = async (_id: string) => {
 };
 
 export default {
-    get, getAll, create, update, remove
+    create, get, getAll, update, remove
 };

@@ -21,9 +21,10 @@ const signup = async (req: Request, res: Response) => {
 };
 
 const getUser = async (req: Request, res: Response) => {
-    const user = await controller.get('_id', '628c1073199a943a9a7a24fd');
-    console.log(user);
-    return res.send(user);
+    // const user = await controller.get('_id', '628c1073199a943a9a7a24fd');
+    // console.log(user);
+    // return res.send(user);
+    return res.send();
 };
 
 export {
