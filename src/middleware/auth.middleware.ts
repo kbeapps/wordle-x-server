@@ -3,6 +3,17 @@ import userController from '../controllers/user.controller';
 import bcrypt from 'bcrypt';
 require('dotenv').config();
 
+const hashPassword = async (password: string) => {
+    try {
+        const salt = await bcrypt.genSalt(Number(process.env.SALTROUNDS));
+        const hashedPass = await bcrypt.hash(password, salt);
+        return hashedPass;
+    } catch (err) {
+        console.log('err in hashPass: ', err);
+        return 'error';
+    };
+};
+
 const signup = async (req: Request, res: Response) => {
     try {
         // Check for duplicates in email
@@ -22,17 +33,7 @@ const signup = async (req: Request, res: Response) => {
         };
 
         // Hash password
-        let hashedPass: string = '';
-        bcrypt.hash(req.body.password, Number(process.env.SALTROUNDS), (err, hash) => {
-            if(hash) {
-                hashedPass = hash;
-            }
-
-            if(err) {
-                console.log(err);
-                throw new Error();
-            }
-        });
+        const hashedPassword = await hashPassword('testPassword');
 
         // JWT eventually
 
@@ -40,7 +41,7 @@ const signup = async (req: Request, res: Response) => {
         // const user = await userController.create(req.body.email, 'hashedPass', req.body.username);
 
         // Return response
-        return res.status(200).send(hashedPass);
+        return res.status(200).send(hashedPassword);
     } catch (err) {
         return res.status(500).send(err);
     }
