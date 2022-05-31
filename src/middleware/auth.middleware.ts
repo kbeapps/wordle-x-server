@@ -1,19 +1,46 @@
 import { Response, Request } from 'express';
-import User from '../models/user.model';
-import controller from '../controllers/user.controller';
+import userController from '../controllers/user.controller';
+import bcrypt from 'bcrypt';
+require('dotenv').config();
 
 const signup = async (req: Request, res: Response) => {
     try {
-        console.log('\n\n\n', req.body);
-        const user = await controller.create(req.body.email, req.body.password, req.body.username);
+        // Check for duplicates in email
+        const duplicateEmail = await userController.get({ email: req.body.email });
 
-        // const duplicateEmail = await User.findOne({ email: user.email });
+        if (duplicateEmail) {
+            res.status(400).send({ message: 'email already in use.' });
+            return;
+        };
 
-        // if (duplicateEmail) {
-        //     res.status(400).send({ message: 'email already in use.' });
-        //     return;
-        // };
-        return res.status(200).send(user);
+        // Check for duplicates in username
+        const duplicateUsername = await userController.get({ username: req.body.username });
+
+        if (duplicateUsername) {
+            res.status(400).send({ message: 'username already in use.' });
+            return;
+        };
+
+        // Hash password
+        let hashedPass: string = '';
+        bcrypt.hash(req.body.password, Number(process.env.SALTROUNDS), (err, hash) => {
+            if(hash) {
+                hashedPass = hash;
+            }
+
+            if(err) {
+                console.log(err);
+                throw new Error();
+            }
+        });
+
+        // JWT eventually
+
+        // Create user
+        // const user = await userController.create(req.body.email, 'hashedPass', req.body.username);
+
+        // Return response
+        return res.status(200).send(hashedPass);
     } catch (err) {
         return res.status(500).send(err);
     }

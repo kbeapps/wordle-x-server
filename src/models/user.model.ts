@@ -13,7 +13,7 @@ export interface IUser {
 
 const UserSchema = new Schema<IUser>({
     email: { type: String, required: true, unique: true },
-    username: { type: String, required: true, minLength: 5, maxLength: 16 },
+    username: { type: String, required: true, unique: true, minLength: 5, maxLength: 16 },
     password: { type: String, required: true, minLength: 5 },
     avatar: String,
     games: Array,
