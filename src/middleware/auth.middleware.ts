@@ -33,7 +33,7 @@ const signup = async (req: Request, res: Response) => {
         };
 
         // Hash password
-        const hashedPassword = await hashPassword('testPassword');
+        const hashedPassword = await hashPassword(req.body.password);
 
         // JWT eventually
 
