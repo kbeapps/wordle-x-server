@@ -5,7 +5,7 @@ const router = Router();
 
 router.post('/signup', middleware.signup);
 
-router.get('/getUser', middleware.getUser);
+router.get('/signin', middleware.signin);
 
 
 export default router;
