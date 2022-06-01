@@ -1,53 +1,92 @@
-import { Response, Request } from 'express';
+import { Response, Request, response } from 'express';
 import controller from '../controllers/group.controller';
+const responseHandler = require('./handlers/response.handler');
 
 const create = async (req: Request, res: Response) => {
-    try {
-        const group = await controller.create(req.body.ownerId, req.body.groupName, req.body.members);
+    let status: number = 200;
+    let message: string = '';
+    let group: object|null = null;
 
-        return res.status(200).send(group);
+    try {
+        group = await controller.create(req.body.ownerId, req.body.groupName, req.body.members);
+        status = 200;
+        message= 'Group created';
+        
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        message = `${err}`;
     };
+
+    responseHandler(res, status, 'createGroup', message, group);
 };
 
 const get = async (req: Request, res: Response) => {
-    try {
-        const group = await controller.get(req.body.query);
+    let status: number = 200;
+    let message: string = '';
+    let group: object|null = null;
 
-        return res.status(200).send(group);
+    try {
+        group = await controller.get(req.body.query);
+        status = 200;
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        message = `${err}`;
     };
+
+    responseHandler(res, status, 'getGroup', message, group);
 };
 
 const getAll = async (req: Request, res: Response) => {
-    try {
-        const groups = await controller.getAll(req.params.userId);
+    let status: number = 200;
+    let message: string = '';
+    let groups: object|null = null;
 
-        return res.status(200).send(groups);
+    try {
+        groups = await controller.getAll(req.params.userId);
+        status = 200;
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        message = `${err}`;
     };
+
+    responseHandler(res, status, 'getAllGroups', message, groups);
 };
 
 const update = async (req: Request, res: Response) => {
-    try {
-        const group = await controller.update(req.body._id, req.body.query);
+    let status: number = 200;
+    let message: string = '';
+    let group: object|null = null;
 
-        return res.status(200).send(group);
+    try {
+        group = await controller.update(req.body._id, req.body.query);
+        status = 200;
+        message = 'Group updated';
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        message = `${err}`;
     };
+
+    responseHandler(res, status, 'updateGroup', message, group);
 };
 
 const remove = async (req: Request, res: Response) => {
+    let status: number = 200;
+    let message: string = '';
+
     try {
         await controller.remove(req.params._id);
-        return res.status(200).send();
+        status = 200;
+        message = 'Group deleted';
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        message = `${err}`;
     };
+
+    responseHandler(res, status, 'removeGroup', message);
 };
 
 export {
