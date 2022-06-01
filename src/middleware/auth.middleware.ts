@@ -9,8 +9,7 @@ const hashPassword = async (password: string) => {
         const hashedPass = await bcrypt.hash(password, salt);
         return hashedPass;
     } catch (err) {
-        // throw new Error(`err in hashPass: ${err}`);
-        return 'error';
+        throw new Error(`err in hashPass: ${err}`);
     };
 };
 
@@ -43,7 +42,7 @@ const signup = async (req: Request, res: Response) => {
 
     const isDupUsername = async (username: string) => {
         try {
-            const duplicateUsername = await userController.get({ username: req.body.username });
+            const duplicateUsername = await userController.get({ username: username });
     
             if (duplicateUsername) {
                 message = 'username already in use.';
@@ -56,22 +55,36 @@ const signup = async (req: Request, res: Response) => {
             status = 500;
             message = 'something went wrong';
             return true;
-        }
+        };
     };
+
+    let hashedPassword: string = '';
+    let user: object = {};
+
+    if(!await isDupEmail(req.body.email) && !await isDupUsername(req.body.username)) {
+        try {
+            hashedPassword = await hashPassword(req.body.password);
+
+            user = await userController.create(req.body.email, hashedPassword, req.body.username);
+
+            // JWT eventually
+            // Cookies eventually
+
+        } catch (err) {
+            console.log(err);
+            status = 500;
+            message = 'something went wrong';
+        } finally {
+            message = 'User created';
+        };
+    }
 
     let payload: IPayload = {
         message: message,
     };
 
-    let hashedPassword: string = '';
-
-    if(!isDupEmail(req.body.email) && !isDupUsername(req.body.username)) {
-        hashedPassword = await hashPassword(req.body.password);
-
-        // JWT eventually
-        // Cookies eventually
-
-        payload.user = await userController.create(req.body.email, hashedPassword, req.body.username);
+    if(Object.keys(user).length) {
+        payload.user = user;
     }
 
     return res.status(status).send(payload);
