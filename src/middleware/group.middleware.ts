@@ -1,53 +1,79 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/group.controller';
+const responseHandler = require('./handlers/response.handler');
 
 const create = async (req: Request, res: Response) => {
-    try {
-        const group = await controller.create(req.body.ownerId, req.body.groupName, req.body.members);
+    let status: number = 200;
+    let group: object | null = null;
 
-        return res.status(200).send(group);
+    try {
+        group = await controller.create(req.body.ownerId, req.body.groupName, req.body.members);
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+
+    responseHandler(res, status, 'createGroup', group);
 };
 
 const get = async (req: Request, res: Response) => {
-    try {
-        const group = await controller.get(req.body.query);
+    let status: number = 200;
+    let group: object | null = null;
 
-        return res.status(200).send(group);
+    try {
+        group = await controller.get(req.body.query);
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+
+    responseHandler(res, status, 'getGroup', group);
 };
 
 const getAll = async (req: Request, res: Response) => {
-    try {
-        const groups = await controller.getAll(req.params.userId);
+    let status: number = 200;
+    let groups: object | null = null;
 
-        return res.status(200).send(groups);
+    try {
+        groups = await controller.getAll(req.params.userId);
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+
+    responseHandler(res, status, 'getAllGroups', groups);
 };
 
 const update = async (req: Request, res: Response) => {
-    try {
-        const group = await controller.update(req.body._id, req.body.query);
+    let status: number = 200;
+    let group: object | null = null;
 
-        return res.status(200).send(group);
+    try {
+        group = await controller.update(req.body._id, req.body.query);
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+
+    responseHandler(res, status, 'updateGroup', group);
 };
 
 const remove = async (req: Request, res: Response) => {
+    let status: number = 200;
+
     try {
         await controller.remove(req.params._id);
-        return res.status(200).send();
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+
+    responseHandler(res, status, 'removeGroup');
 };
 
 export {
