@@ -9,53 +9,79 @@ const hashPassword = async (password: string) => {
         const hashedPass = await bcrypt.hash(password, salt);
         return hashedPass;
     } catch (err) {
-        console.log('err in hashPass: ', err);
+        // throw new Error(`err in hashPass: ${err}`);
         return 'error';
     };
 };
 
 const signup = async (req: Request, res: Response) => {
-    try {
-        // Check for duplicates in email
-        const duplicateEmail = await userController.get({ email: req.body.email });
-
-        if (duplicateEmail) {
-            res.status(400).send({ message: 'email already in use.' });
-            return;
-        };
-
-        // Check for duplicates in username
-        const duplicateUsername = await userController.get({ username: req.body.username });
-
-        if (duplicateUsername) {
-            res.status(400).send({ message: 'username already in use.' });
-            return;
-        };
-
-        // Hash password
-        const hashedPassword = await hashPassword(req.body.password);
-
-        // JWT eventually
-
-        // Create user
-        // const user = await userController.create(req.body.email, 'hashedPass', req.body.username);
-
-        // Return response
-        return res.status(200).send(hashedPassword);
-    } catch (err) {
-        return res.status(500).send(err);
+    interface IPayload {
+        message: string,
+        user?: object
     }
 
+    let message: string = '';
+    let status: number = 200;
+
+    const isDupEmail = async (email: string) => {
+        try {
+            const duplicateEmail = await userController.get({ email: email });
+    
+            if (duplicateEmail) {
+                message = 'email already in use.';
+                status = 400;
+                return true;
+            };
+
+            return false;
+        } catch (err) {
+            status = 500;
+            message = 'something went wrong';
+            return true;
+        }
+    };
+
+    const isDupUsername = async (username: string) => {
+        try {
+            const duplicateUsername = await userController.get({ username: req.body.username });
+    
+            if (duplicateUsername) {
+                message = 'username already in use.';
+                status = 400;
+                return true;
+            };
+
+            return false;
+        } catch (err) {
+            status = 500;
+            message = 'something went wrong';
+            return true;
+        }
+    };
+
+    let payload: IPayload = {
+        message: message,
+    };
+
+    let hashedPassword: string = '';
+
+    if(!isDupEmail(req.body.email) && !isDupUsername(req.body.username)) {
+        hashedPassword = await hashPassword(req.body.password);
+
+        // JWT eventually
+        // Cookies eventually
+
+        payload.user = await userController.create(req.body.email, hashedPassword, req.body.username);
+    }
+
+    return res.status(status).send(payload);
 };
 
-const getUser = async (req: Request, res: Response) => {
-    // const user = await controller.get('_id', '628c1073199a943a9a7a24fd');
-    // console.log(user);
-    // return res.send(user);
+const signin = async (req: Request, res: Response) => {
     return res.send();
 };
 
 export {
-    signup, getUser
+    signup, signin
 };
 
