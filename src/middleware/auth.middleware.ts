@@ -133,7 +133,7 @@ const signin = async (req: Request, res: Response) => {
             status = 500;
             payload.message = 'something went wrong';
         }
-
+        payload.message = passwordIsValid ? 'signin successful' : 'invalid password';
         if (passwordIsValid) {
             payload.user = {
                 friends: user.friends,
