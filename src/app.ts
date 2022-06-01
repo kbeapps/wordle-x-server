@@ -1,9 +1,9 @@
 import * as dotenv from 'dotenv';
 import router from './routes/index';
 import db from './models';
+require('dotenv').config();
 
 const initServer = async () => {
-    dotenv.config();
 
     try {
         const connected = await db.mongoose

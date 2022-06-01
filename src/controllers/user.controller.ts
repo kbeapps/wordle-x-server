@@ -1,6 +1,6 @@
-import User from '../models/user.model';
+import User, { IUser } from '../models/user.model';
 
-const create = async (email: string, password: string, username: string) => {
+const create = async (email: string, password: string, username: string): Promise<IUser> => {
     const user = new User({
         email: email,
         password: password,
