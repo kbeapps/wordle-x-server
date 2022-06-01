@@ -1,9 +1,14 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/game.controller';
+const responseHandler = require('./handlers/response.handler');
+require('dotenv').config();
 
 const create = async (req: Request, res: Response) => {
+    let game: object | null = null;
+    let status: number = 200;
+
     try {
-        const game = await controller.create(
+        game = await controller.create(
             req.body.name,
             req.body.ownerId,
             req.body.players,
@@ -14,50 +19,62 @@ const create = async (req: Request, res: Response) => {
             Object.keys(req.body).includes('theme') ? req.body.theme : null
         );
 
-        return res.status(200).send(game);
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+
+    responseHandler(res, status, 'createGame', game);
 };
 
 const get = async (req: Request, res: Response) => {
+    let game: object | null = null;
+    let status: number = 200;
     try {
-        const game = await controller.get(req.body.query);
-
-        return res.status(200).send(game);
+        game = await controller.get(req.body.query);
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+    responseHandler(res, status, 'getGame', game);
 };
 
 const getAll = async (req: Request, res: Response) => {
+    let games: object | null = null;
+    let status: number = 200;
     try {
-        const game = await controller.getAll(req.params.ownerId);
+        games = await controller.getAll(req.params.ownerId);
 
-        return res.status(200).send(game);
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+    responseHandler(res, status, 'getAllGames', games);
 };
 
 const update = async (req: Request, res: Response) => {
+    let game: object | null = null;
+    let status: number = 200;
     try {
-        const game = await controller.update(req.body._id, req.body.query);
+        game = await controller.update(req.body._id, req.body.query);
 
-        return res.status(200).send(game);
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+    responseHandler(res, status, 'updateGame', game);
 };
 
 const remove = async (req: Request, res: Response) => {
+    let status: number = 200;
     try {
         await controller.remove(req.params._id);
 
-        return res.status(200).send();
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+    responseHandler(res, status, 'deleteGame');
 };
 
 export {

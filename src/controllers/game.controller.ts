@@ -1,6 +1,6 @@
 import Game from '../models/game.model';
 
-const create = async (name: string, ownerId: string, players: string[], wordHistory: string[], type: string, winCondition: string, wordSize: string, theme?: string) => {
+const create = async (name: string, ownerId: string, players: string[], wordHistory: string[], type: string, winCondition: string, wordSize: string, theme?: string): Promise<object> => {
     const game = new Game({
         name: name,
         ownerId: ownerId,

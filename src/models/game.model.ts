@@ -14,7 +14,7 @@ export interface IGame {
 };
 
 const GameSchema = new Schema<IGame>({
-    name: { type: String, required: true, unique: true, minLength: 2, maxLength: 16 },
+    name: { type: String, required: true, minLength: 2, maxLength: 16 },
     ownerId: { type: String, required: true },
     players: { type: [String], required: true, min: 1, max: 20 },
     wordHistory: { type: [String], required: true, min: 1, max: 365 },
