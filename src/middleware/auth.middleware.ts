@@ -1,12 +1,8 @@
 import { Response, Request } from 'express';
 import userController from '../controllers/user.controller';
 import bcrypt from 'bcrypt';
+const responseHandler = require('./handlers/response.handler');
 require('dotenv').config();
-
-interface IPayload {
-    message: string,
-    user?: object
-};
 
 const hashPassword = async (password: string) => {
     try {
@@ -25,7 +21,7 @@ const confirmPassword = async (password: string, hash: string) => {
     }
 };
 
-const signup = async (req: Request, res: Response) => {
+const signup = async (req: Request, res: Response):Promise<void> => {
     let message: string = '';
     let status: number = 200;
 
@@ -65,8 +61,13 @@ const signup = async (req: Request, res: Response) => {
         };
     };
 
+    interface IUser {
+        friends?: string[],
+        games?: string[],
+        groups?: string[]
+    }
     let hashedPassword: string = '';
-    let user: object = {};
+    let user: IUser = {};
 
     if (!await isDupEmail(req.body.email) && !await isDupUsername(req.body.username)) {
         try {
@@ -76,28 +77,21 @@ const signup = async (req: Request, res: Response) => {
 
             // JWT eventually
             // Cookies eventually
+            message = 'User created';
 
         } catch (err) {
             console.log(err);
             status = 500;
             message = 'something went wrong';
-        } finally {
-            message = 'User created';
-        };
+        }
     }
 
-    let payload: IPayload = {
-        message: message,
-    };
+    const data = Object.keys(user).length ? { friends: user.friends } : null;
 
-    if (Object.keys(user).length) {
-        payload.user = user;
-    }
-
-    return res.status(status).send(payload);
+    responseHandler(res, status, 'signup', message, data);
 };
 
-const signin = async (req: Request, res: Response) => {
+const signin = async (req: Request, res: Response):Promise<void> => {
     let message: string = '';
     let status: number = 200;
 
@@ -128,20 +122,19 @@ const signin = async (req: Request, res: Response) => {
         status = 500;
     }
 
-    let payload: IPayload = {
-        message: message
-    };
+    let data: object|null = null;
+
     if (Object.keys(user).length > 1) {
         let passwordIsValid: boolean = false;
         try {
             passwordIsValid = await confirmPassword(req.body.password, user.password);
         } catch (err) {
             status = 500;
-            payload.message = 'something went wrong';
+            message = 'something went wrong';
         }
-        payload.message = passwordIsValid ? 'signin successful' : 'invalid password';
+        message = passwordIsValid ? 'signin successful' : 'invalid password';
         if (passwordIsValid) {
-            payload.user = {
+            data = {
                 friends: user.friends,
                 games: user.games,
                 groups: user.groups
@@ -149,7 +142,7 @@ const signin = async (req: Request, res: Response) => {
         }
     }
 
-    return res.status(status).send(payload);
+    responseHandler(res, status, 'signin', message, data);
 };
 
 export {
