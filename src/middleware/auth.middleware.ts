@@ -21,7 +21,7 @@ const confirmPassword = async (password: string, hash: string) => {
     }
 };
 
-const signup = async (req: Request, res: Response):Promise<void> => {
+const signup = async (req: Request, res: Response): Promise<void> => {
     let message: string = '';
     let status: number = 200;
 
@@ -38,7 +38,6 @@ const signup = async (req: Request, res: Response):Promise<void> => {
             return false;
         } catch (err) {
             status = 500;
-            message = 'something went wrong';
             return true;
         }
     };
@@ -56,24 +55,17 @@ const signup = async (req: Request, res: Response):Promise<void> => {
             return false;
         } catch (err) {
             status = 500;
-            message = 'something went wrong';
             return true;
         };
     };
 
-    interface IUser {
-        friends?: string[],
-        games?: string[],
-        groups?: string[]
-    }
     let hashedPassword: string = '';
-    let user: IUser = {};
 
     if (!await isDupEmail(req.body.email) && !await isDupUsername(req.body.username)) {
         try {
             hashedPassword = await hashPassword(req.body.password);
 
-            user = await userController.create(req.body.email, hashedPassword, req.body.username);
+            await userController.create(req.body.email, hashedPassword, req.body.username);
 
             // JWT eventually
             // Cookies eventually
@@ -82,16 +74,13 @@ const signup = async (req: Request, res: Response):Promise<void> => {
         } catch (err) {
             console.log(err);
             status = 500;
-            message = 'something went wrong';
         }
     }
 
-    const data = Object.keys(user).length ? { friends: user.friends } : null;
-
-    responseHandler(res, status, 'signup', message, data);
+    responseHandler(res, status, 'signup', message);
 };
 
-const signin = async (req: Request, res: Response):Promise<void> => {
+const signin = async (req: Request, res: Response): Promise<void> => {
     let message: string = '';
     let status: number = 200;
 
@@ -118,29 +107,29 @@ const signin = async (req: Request, res: Response):Promise<void> => {
             status = 400;
         }
     } catch (err) {
-        message = 'something went wrong';
         status = 500;
     }
 
-    let data: object|null = null;
+    let passwordIsValid: boolean = false;
 
     if (Object.keys(user).length > 1) {
-        let passwordIsValid: boolean = false;
         try {
             passwordIsValid = await confirmPassword(req.body.password, user.password);
         } catch (err) {
             status = 500;
-            message = 'something went wrong';
         }
-        message = passwordIsValid ? 'signin successful' : 'invalid password';
-        if (passwordIsValid) {
-            data = {
-                friends: user.friends,
-                games: user.games,
-                groups: user.groups
-            };
+
+        if (!passwordIsValid) {
+            status = 400;
+            message = 'invalid password';
         }
     }
+
+    const data = passwordIsValid ? {
+        friends: user.friends,
+        games: user.games,
+        groups: user.groups
+    } : null;
 
     responseHandler(res, status, 'signin', message, data);
 };
@@ -148,4 +137,3 @@ const signin = async (req: Request, res: Response):Promise<void> => {
 export {
     signup, signin
 };
-

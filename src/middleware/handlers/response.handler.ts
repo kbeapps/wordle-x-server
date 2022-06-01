@@ -8,18 +8,13 @@ interface IPayload {
 const createMessage = (status: number, source: string, message?: string): string => {
     let newMessage: string = `${source}: `;
 
-    if(message) {
-        newMessage += message;
-        return newMessage;
-    }
-
-    switch(status){
+    switch (status) {
         case 200: {
             newMessage += 'Successful';
             break;
         }
         case 400: {
-            newMessage += 'Unidentified input error';
+            newMessage += message || 'Unidentified input error';
             break;
         }
         case 500: {
@@ -33,12 +28,12 @@ const createMessage = (status: number, source: string, message?: string): string
     return newMessage;
 };
 
-module.exports = (res: Response, status: number, source: string, message?: string, data?: object):void => {
+module.exports = (res: Response, status: number, source: string, message?: string, data?: object): void => {
     let payload: IPayload = {
         message: createMessage(status, source, message)
     };
 
-    if(data) {
+    if (data) {
         payload.data = data;
     }
 
