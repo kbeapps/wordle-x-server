@@ -115,11 +115,17 @@ const signin = async (req: Request, res: Response) => {
     };
 
     try {
-        const getUser = await userController.get(userQuery);
-        user = getUser ? getUser : user;
+        const foundUser = await userController.get(userQuery);
+
+        if (foundUser) {
+            user = foundUser;
+        } else {
+            message = 'user not found';
+            status = 400;
+        }
     } catch (err) {
-        message = 'user not found';
-        status = 400;
+        message = 'something went wrong';
+        status = 500;
     }
 
     let payload: IPayload = {
