@@ -1,34 +1,49 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/user.controller';
+const responseHandler = require('./handlers/response.handler');
 
 const get = async (req: Request, res: Response) => {
-    try {
-        const user = await controller.get(req.body.query);
+    let status: number = 200;
+    let user: object | null = null;
 
-        return res.status(200).send(user);
+    try {
+        user = await controller.get(req.body.query);
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+
+    responseHandler(res, status, 'getUser', user);
 };
 
 const update = async (req: Request, res: Response) => {
-    try {
-        const user = await controller.update(req.body._id, req.body.query);
+    let status: number = 200;
+    let user: object | null = null;
 
-        return res.status(200).send(user);
+    try {
+        user = await controller.update(req.body._id, req.body.query);
+
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+
+    responseHandler(res, status, 'updateUser', user);
 };
 
 const remove = async (req: Request, res: Response) => {
+    let status: number = 200;
+    
     try {
         await controller.remove(req.params._id);
 
-        return res.status(200).send();
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+
+    responseHandler(res, status, 'removeUser');
 };
 
 export {
