@@ -9,8 +9,7 @@ const create = async (userId: string, message: string) => {
     try {
         return await notification.save();
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -18,8 +17,7 @@ const getAll = async (userId: string) => {
     try {
         return await Notification.find({ userId: userId });
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -27,8 +25,7 @@ const remove = async (_id: string) => {
     try {
         return await Notification.findByIdAndRemove(_id);
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -36,8 +33,7 @@ const removeAll = async (userId: string) => {
     try {
         return await Notification.deleteMany({ userId: userId });
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 

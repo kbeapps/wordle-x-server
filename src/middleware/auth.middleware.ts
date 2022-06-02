@@ -1,10 +1,10 @@
 import { Response, Request } from 'express';
 import userController from '../controllers/user.controller';
 import bcrypt from 'bcrypt';
-const responseHandler = require('./handlers/response.handler');
+const responseHandler = require('./_handlers/response.handler');
 require('dotenv').config();
-const errHandler = require('./handlers/err.handler');
-const source = 'authMiddleware';
+const errHandler = require('./_handlers/err.handler');
+const source: string = 'authMiddleware';
 
 const hashPassword = async (password: string) => {
     try {
@@ -102,14 +102,15 @@ const signin = async (req: Request, res: Response): Promise<void> => {
     };
 
     try {
-        const foundUser = await userController.get(userQuery);
 
+        const foundUser = await userController.get(userQuery);
         if (foundUser) {
             user = foundUser;
         } else {
             message = 'user not found';
             status = 400;
         }
+
     } catch (err) {
         errHandler(source, err);
         status = 500;

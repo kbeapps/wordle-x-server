@@ -1,6 +1,8 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/user.controller';
-const responseHandler = require('./handlers/response.handler');
+const responseHandler = require('./_handlers/response.handler');
+const errHandler = require('./_handlers/err.handler');
+const source: string = 'userMiddleware';
 
 const get = async (req: Request, res: Response): Promise<void> => {
     let message: string | null = null;
@@ -14,7 +16,7 @@ const get = async (req: Request, res: Response): Promise<void> => {
         }
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
 
     responseHandler(res, status, 'getUser', message, user);
@@ -29,7 +31,7 @@ const update = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
 
     responseHandler(res, status, 'updateUser', user);
@@ -43,7 +45,7 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
 
     responseHandler(res, status, 'removeUser');
