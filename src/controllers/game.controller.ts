@@ -20,8 +20,7 @@ const create = async (name: string, ownerId: string, players: string[], wordHist
     try {
         return await game.save();
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -29,8 +28,7 @@ const get = async (query: object) => {
     try {
         return await Game.findOne(query);
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -38,8 +36,7 @@ const getAll = async (ownerId: string) => {
     try {
         return await Game.find({ ownerId: ownerId });
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -49,8 +46,7 @@ const update = async (_id: string, query: object) => {
             _id, query, { new: true }
         );
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -58,8 +54,7 @@ const remove = async (_id: string) => {
     try {
         return await Game.findByIdAndRemove(_id);
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 

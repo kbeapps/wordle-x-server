@@ -1,6 +1,8 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/group.controller';
-const responseHandler = require('./handlers/response.handler');
+const responseHandler = require('./_handlers/response.handler');
+const errHandler = require('./_handlers/err.handler');
+const source: string = 'groupMiddleware';
 
 const create = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
@@ -11,7 +13,7 @@ const create = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
 
     responseHandler(res, status, 'createGroup', group);
@@ -26,7 +28,7 @@ const get = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
 
     responseHandler(res, status, 'getGroup', group);
@@ -41,7 +43,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
 
     responseHandler(res, status, 'getAllGroups', groups);
@@ -56,7 +58,7 @@ const update = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
 
     responseHandler(res, status, 'updateGroup', group);
@@ -70,7 +72,7 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
 
     responseHandler(res, status, 'removeGroup');

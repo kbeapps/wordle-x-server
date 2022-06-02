@@ -1,7 +1,9 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/game.controller';
-const responseHandler = require('./handlers/response.handler');
+const responseHandler = require('./_handlers/response.handler');
 require('dotenv').config();
+const errHandler = require('./_handlers/err.handler');
+const source: string = 'gameMiddleware';
 
 const create = async (req: Request, res: Response): Promise<void> => {
     let game: object | null = null;
@@ -21,7 +23,7 @@ const create = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
 
     responseHandler(res, status, 'createGame', game);
@@ -34,7 +36,7 @@ const get = async (req: Request, res: Response): Promise<void> => {
         game = await controller.get(req.body.query);
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
     responseHandler(res, status, 'getGame', game);
 };
@@ -60,7 +62,7 @@ const update = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
     responseHandler(res, status, 'updateGame', game);
 };
@@ -72,7 +74,7 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
     responseHandler(res, status, 'deleteGame');
 };

@@ -1,6 +1,8 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/notification.controller';
-const responseHandler = require('./handlers/response.handler');
+const responseHandler = require('./_handlers/response.handler');
+const errHandler = require('./_handlers/err.handler');
+const source: string = 'notificationMiddleware';
 
 const create = async (req: Request, res: Response): Promise<void> => {
     let notification: object | null = null;
@@ -11,7 +13,7 @@ const create = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
     responseHandler(res, status, 'createNotification', notification);
 
@@ -28,7 +30,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
         }
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
     responseHandler(res, status, 'getAllNotifications', message, notifications);
 
@@ -41,7 +43,7 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
     responseHandler(res, status, 'removeNotification');
 };
@@ -53,7 +55,7 @@ const removeAll = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
     responseHandler(res, status, 'removeAllNotifications');
 };

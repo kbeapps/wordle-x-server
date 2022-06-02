@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import router from './routes/index';
 import db from './models';
 require('dotenv').config();
+const errHandler = require('./middleware/_handlers/err.handler');
 
 const initServer = async () => {
 
@@ -14,7 +15,7 @@ const initServer = async () => {
         };
 
     } catch (err) {
-        console.log('error: ', err);
+        errHandler('server', err);
         process.exit();
     };
 

@@ -10,8 +10,7 @@ const create = async (email: string, password: string, username: string): Promis
     try {
         return await user.save();
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -19,8 +18,7 @@ const get = async (query: object) => {
     try {
         return await User.findOne(query);
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -30,8 +28,7 @@ const update = async (_id: string, query: object) => {
             _id, query, { new: true }
         );
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
@@ -39,8 +36,7 @@ const remove = async (_id: string) => {
     try {
         return await User.findByIdAndRemove(_id);
     } catch (err) {
-        console.log(err);
-        throw new Error();
+        throw new Error(String(err));
     };
 };
 
