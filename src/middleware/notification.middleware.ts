@@ -1,44 +1,61 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/notification.controller';
+const responseHandler = require('./handlers/response.handler');
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
+    let notification: object | null = null;
+    let status: number = 200;
+
     try {
-        const notification = await controller.create(req.body.userId, req.body.message);
+        notification = await controller.create(req.body.userId, req.body.message);
 
-        return res.status(200).send(notification);
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+    responseHandler(res, status, 'createNotification', notification);
+
 };
 
-const getAll = async (req: Request, res: Response) => {
+const getAll = async (req: Request, res: Response): Promise<void> => {
+    let message: string | null = null;
+    let notifications: object[] | null = null;
+    let status: number = 200;
     try {
-        const notifications = await controller.getAll(req.params.userId);
-
-        return res.status(200).send(notifications);
+        notifications = await controller.getAll(req.params.userId);
+        if (!notifications) {
+            message = 'no notifications';
+        }
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+    responseHandler(res, status, 'getAllNotifications', message, notifications);
+
 };
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response): Promise<void> => {
+    let status: number = 200;
     try {
         await controller.remove(req.params._id);
 
-        return res.status(200).send();
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+    responseHandler(res, status, 'removeNotification');
 };
 
-const removeAll = async (req: Request, res: Response) => {
+const removeAll = async (req: Request, res: Response): Promise<void> => {
+    let status: number = 200;
     try {
         await controller.removeAll(req.params.userId);
 
-        return res.status(200).send();
     } catch (err) {
-        return res.status(500).send(err);
+        status = 500;
+        console.log(err);
     };
+    responseHandler(res, status, 'removeAllNotifications');
 };
 
 export {
