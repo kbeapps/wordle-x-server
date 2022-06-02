@@ -3,18 +3,22 @@ import controller from '../controllers/user.controller';
 const responseHandler = require('./handlers/response.handler');
 
 const get = async (req: Request, res: Response) => {
+    let message: string | null = null;
     let status: number = 200;
     let user: object | null = null;
 
     try {
         user = await controller.get(req.body.query);
-
+        if (!user) {
+            status = 400;
+            message = 'user not found';
+        }
     } catch (err) {
         status = 500;
         console.log(err);
     };
 
-    responseHandler(res, status, 'getUser', user);
+    responseHandler(res, status, 'getUser', message, user);
 };
 
 const update = async (req: Request, res: Response) => {
@@ -34,7 +38,7 @@ const update = async (req: Request, res: Response) => {
 
 const remove = async (req: Request, res: Response) => {
     let status: number = 200;
-    
+
     try {
         await controller.remove(req.params._id);
 
