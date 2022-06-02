@@ -3,7 +3,7 @@ import controller from '../controllers/game.controller';
 const responseHandler = require('./handlers/response.handler');
 require('dotenv').config();
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
     let game: object | null = null;
     let status: number = 200;
 
@@ -27,7 +27,7 @@ const create = async (req: Request, res: Response) => {
     responseHandler(res, status, 'createGame', game);
 };
 
-const get = async (req: Request, res: Response) => {
+const get = async (req: Request, res: Response): Promise<void> => {
     let game: object | null = null;
     let status: number = 200;
     try {
@@ -39,7 +39,7 @@ const get = async (req: Request, res: Response) => {
     responseHandler(res, status, 'getGame', game);
 };
 
-const getAll = async (req: Request, res: Response) => {
+const getAll = async (req: Request, res: Response): Promise<void> => {
     let games: object | null = null;
     let status: number = 200;
     try {
@@ -52,7 +52,7 @@ const getAll = async (req: Request, res: Response) => {
     responseHandler(res, status, 'getAllGames', games);
 };
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response): Promise<void> => {
     let game: object | null = null;
     let status: number = 200;
     try {
@@ -65,7 +65,7 @@ const update = async (req: Request, res: Response) => {
     responseHandler(res, status, 'updateGame', game);
 };
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
     try {
         await controller.remove(req.params._id);

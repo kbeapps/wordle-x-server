@@ -2,7 +2,7 @@ import { Response, Request } from 'express';
 import controller from '../controllers/group.controller';
 const responseHandler = require('./handlers/response.handler');
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
     let group: object | null = null;
 
@@ -17,7 +17,7 @@ const create = async (req: Request, res: Response) => {
     responseHandler(res, status, 'createGroup', group);
 };
 
-const get = async (req: Request, res: Response) => {
+const get = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
     let group: object | null = null;
 
@@ -32,7 +32,7 @@ const get = async (req: Request, res: Response) => {
     responseHandler(res, status, 'getGroup', group);
 };
 
-const getAll = async (req: Request, res: Response) => {
+const getAll = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
     let groups: object | null = null;
 
@@ -47,7 +47,7 @@ const getAll = async (req: Request, res: Response) => {
     responseHandler(res, status, 'getAllGroups', groups);
 };
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
     let group: object | null = null;
 
@@ -62,7 +62,7 @@ const update = async (req: Request, res: Response) => {
     responseHandler(res, status, 'updateGroup', group);
 };
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
 
     try {

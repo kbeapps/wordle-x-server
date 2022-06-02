@@ -2,7 +2,7 @@ import { Response, Request } from 'express';
 import controller from '../controllers/user.controller';
 const responseHandler = require('./handlers/response.handler');
 
-const get = async (req: Request, res: Response) => {
+const get = async (req: Request, res: Response): Promise<void> => {
     let message: string | null = null;
     let status: number = 200;
     let user: object | null = null;
@@ -20,7 +20,7 @@ const get = async (req: Request, res: Response) => {
     responseHandler(res, status, 'getUser', message, user);
 };
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
     let user: object | null = null;
 
@@ -35,7 +35,7 @@ const update = async (req: Request, res: Response) => {
     responseHandler(res, status, 'updateUser', user);
 };
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
 
     try {

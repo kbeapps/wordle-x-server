@@ -29,7 +29,7 @@ const createMessage = (status: number, source: string, message?: string): string
 };
 
 module.exports = (res: Response, status: number, source: string, message?: string, data?: object): void => {
-    if (typeof message != 'string') {
+    if (!data && message && typeof message != 'string') {
         data = message;
         message = '';
     }
