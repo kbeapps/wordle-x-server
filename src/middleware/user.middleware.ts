@@ -10,7 +10,6 @@ const get = async (req: Request, res: Response) => {
     try {
         user = await controller.get(req.body.query);
         if (!user) {
-            status = 400;
             message = 'user not found';
         }
     } catch (err) {
