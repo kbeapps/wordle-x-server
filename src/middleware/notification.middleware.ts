@@ -18,16 +18,20 @@ const create = async (req: Request, res: Response): Promise<void> => {
 };
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
+    let message: string | null = null;
     let notifications: object[] | null = null;
     let status: number = 200;
     try {
         notifications = await controller.getAll(req.params.userId);
-
+        if (!notifications) {
+            status = 400;
+            message = 'no notifications';
+        }
     } catch (err) {
         status = 500;
         console.log(err);
     };
-    responseHandler(res, status, 'getAllNotifications', notifications);
+    responseHandler(res, status, 'getAllNotifications', message, notifications);
 
 };
 
