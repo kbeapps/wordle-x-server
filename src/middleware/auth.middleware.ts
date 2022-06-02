@@ -3,6 +3,8 @@ import userController from '../controllers/user.controller';
 import bcrypt from 'bcrypt';
 const responseHandler = require('./handlers/response.handler');
 require('dotenv').config();
+const errHandler = require('./handlers/err.handler');
+const source = 'authMiddleware';
 
 const hashPassword = async (password: string) => {
     try {
@@ -37,6 +39,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
 
             return false;
         } catch (err) {
+            errHandler(source, err);
             status = 500;
             return true;
         }
@@ -54,6 +57,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
 
             return false;
         } catch (err) {
+            errHandler(source, err);
             status = 500;
             return true;
         };
@@ -72,7 +76,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
             message = 'User created';
 
         } catch (err) {
-            console.log(err);
+            errHandler(source, err);
             status = 500;
         }
     }
@@ -107,6 +111,7 @@ const signin = async (req: Request, res: Response): Promise<void> => {
             status = 400;
         }
     } catch (err) {
+        errHandler(source, err);
         status = 500;
     }
 
@@ -116,6 +121,7 @@ const signin = async (req: Request, res: Response): Promise<void> => {
         try {
             passwordIsValid = await confirmPassword(req.body.password, user.password);
         } catch (err) {
+            errHandler(source, err);
             status = 500;
         }
 
