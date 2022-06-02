@@ -24,7 +24,6 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
     try {
         notifications = await controller.getAll(req.params.userId);
         if (!notifications) {
-            status = 400;
             message = 'no notifications';
         }
     } catch (err) {
