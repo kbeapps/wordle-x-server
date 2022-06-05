@@ -11,11 +11,24 @@ const checkAllowedValueTypes = (body: object): string => {
         strArrVals: string[] = ['players', 'wordHistory', 'members', 'games', 'friends', 'groups'],
         strVals: string[] = ['name', 'email', 'username', 'type', 'winCondition', 'ownerId', 'theme', 'groupName', 'userId', 'message', 'password', 'avatar'];
 
-    const stringIsValid = (strToValidate: string): boolean => {
-        // console.log('strToValidate: ', strToValidate);
-        // const test = /[a-z0-9].test(strToValidate);
-        // console.log('test: ', test);
-        return /^([a-z0-9]{5,})$/.test(strToValidate);
+    const stringIsValid = (strToValidate: string, key: string): boolean => {
+        let regex = /[]/;
+
+        switch (key) {
+            case 'email': {
+                regex = /^([a-zA-Z0-9-.]+)@([a-zA-Z0-9-.]+).([a-zA-Z]{2,5})$/;
+                break;
+            }
+            case 'password': {
+                regex = /^[a-zA-Z0-9_.!@$%&(){}:;<>,?+=|-]{5,20}$/;
+                break;
+            }
+            default: {
+                regex = /^[a-zA-Z0-9_.!@$%&(){}:;<>,?+=|-]{0,}$/;
+                break;
+            }
+        }
+        return regex.test(strToValidate);
     },
         isValidArr = (elemType: string, val: any): string => {
             const isArray = Array.isArray(val);
@@ -74,8 +87,8 @@ const checkAllowedValueTypes = (body: object): string => {
 
                     if (valType != reqType) {
                         res = createMessage(key, reqType, valType);
-                    } else if (!stringIsValid(val)) {
-                        res = 'invalid characters';
+                    } else if (!stringIsValid(val, key)) {
+                        res = `invalid characters for key: ${key}`;
                     }
                     break;
                 };
