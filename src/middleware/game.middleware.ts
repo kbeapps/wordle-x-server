@@ -33,7 +33,8 @@ const get = async (req: Request, res: Response): Promise<void> => {
     let game: object | null = null;
     let status: number = 200;
     try {
-        game = await controller.get(req.body.query);
+        console.log(req.params);
+        game = await controller.get(req.params);
     } catch (err) {
         status = 500;
         errHandler(source, err);
@@ -57,8 +58,10 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 const update = async (req: Request, res: Response): Promise<void> => {
     let game: object | null = null;
     let status: number = 200;
+    const query = { ...req.body };
+    delete query._id;
     try {
-        game = await controller.update(req.body._id, req.body.query);
+        game = await controller.update(req.body._id, query);
 
     } catch (err) {
         status = 500;
@@ -80,6 +83,6 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 };
 
 export {
-    get, getAll, create, update, remove
+    create, get, getAll, update, remove
 };
 
