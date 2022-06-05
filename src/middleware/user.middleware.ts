@@ -10,7 +10,7 @@ const get = async (req: Request, res: Response): Promise<void> => {
     let user: object | null = null;
 
     try {
-        user = await controller.get(req.body.query);
+        user = await controller.get(req.body);
         if (!user) {
             message = 'user not found';
         }
@@ -25,9 +25,11 @@ const get = async (req: Request, res: Response): Promise<void> => {
 const update = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
     let user: object | null = null;
+    const query = { ...req.body };
+    delete query._id;
 
     try {
-        user = await controller.update(req.body._id, req.body.query);
+        user = await controller.update(req.body._id, query);
 
     } catch (err) {
         status = 500;
