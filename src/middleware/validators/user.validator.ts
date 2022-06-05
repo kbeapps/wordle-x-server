@@ -33,7 +33,7 @@ const update = (req: Request, res: Response, next: NextFunction) => {
 const remove = (req: Request, res: Response, next: NextFunction) => {
     const requiredKeys: string[] = ['_id'];
     const minMaxKeys: string = '1/1';
-    const validationError = processValidation(minMaxKeys, { _id: req.params._id }, requiredKeys);
+    const validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
     if (validationError) {
         responseHandler(res, 400, 'remove', validationError);
