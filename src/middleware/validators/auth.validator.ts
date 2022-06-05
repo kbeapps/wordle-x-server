@@ -17,7 +17,7 @@ const signup = (req: Request, res: Response, next: NextFunction) => {
 
 const signin = (req: Request, res: Response, next: NextFunction) => {
     const requiredKeys: string[] = ['password'];
-    const allowedKeys: string[] = ['email', 'username'];
+    const allowedKeys: string[] = ['email', 'username', 'boards'];
     const minMaxKeys: string = '2/3';
     const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
 
