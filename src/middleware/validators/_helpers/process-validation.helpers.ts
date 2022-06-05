@@ -6,11 +6,6 @@ const checkKeys = (bodyKeys: string[], requiredKeys: string[], allowedKeys?: str
 };
 
 const checkAllowedValueTypes = (body: object): string => {
-    const numVals: string[] = ['wordSize'],
-        objArrVals: string[] = ['boards'],
-        strArrVals: string[] = ['players', 'wordHistory', 'members', 'games', 'friends', 'groups'],
-        strVals: string[] = ['name', 'email', 'username', 'type', 'winCondition', 'ownerId', 'theme', 'groupName', 'userId', 'message', 'password', 'avatar'];
-
     const stringIsValid = (strToValidate: string, key: string): boolean => {
         let regex = /[]/;
 
@@ -23,8 +18,18 @@ const checkAllowedValueTypes = (body: object): string => {
                 regex = /^[a-zA-Z0-9_.!@$%&(){}:;<>,?+=|-]{5,20}$/;
                 break;
             }
-            default: {
+            case '_id':
+            case 'ownerId': {
+                regex = /^[a-zA-Z0-9]{24,24}$/;
+                console.log('test');
+                break;
+            }
+            case 'username': {
                 regex = /^[a-zA-Z0-9_.!@$%&(){}:;<>,?+=|-]{0,}$/;
+                break;
+            }
+            default: {
+                regex = /^[a-zA-Z0-9_.!@$%&(){}:;<>, ?+=|-]{0,}$/;
                 break;
             }
         }
@@ -55,6 +60,11 @@ const checkAllowedValueTypes = (body: object): string => {
     const createMessage = (key: string, reqValType: string, recValType: string): string => {
         return `Invalid value type for key: ${key}. Expected type: ${reqValType}. Received type: ${recValType}.`;
     };
+
+    const numVals: string[] = ['wordSize'],
+        objArrVals: string[] = ['boards'],
+        strArrVals: string[] = ['players', 'wordHistory', 'members', 'games', 'friends', 'groups'],
+        strVals: string[] = ['_id', 'name', 'email', 'username', 'type', 'winCondition', 'ownerId', 'theme', 'groupName', 'userId', 'message', 'password', 'avatar'];
 
     let res: string = '';
 
