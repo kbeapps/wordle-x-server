@@ -125,6 +125,10 @@ const processValidation = (minMaxKeys: string, body: object, requiredKeys: strin
     let res: string | null = null;
     const bodyKeys: string[] = Object.keys(body);
 
+    if (!bodyKeys.length) {
+        return 'invalid params/body.  No content';
+    }
+
     const keysChecked = allowedKeys ? checkKeys(bodyKeys, requiredKeys, allowedKeys) : checkKeys(bodyKeys, requiredKeys);
 
     res = keysChecked ? null
