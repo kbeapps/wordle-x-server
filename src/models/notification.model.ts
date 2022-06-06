@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
-const { Schema } = mongoose;
+import mongoose, { Schema, Types } from 'mongoose';
 
 export interface INotification {
     userId: string,
-    message: string
+    message: string,
+    _id?: Types.ObjectId;
 };
 
 const NotificationSchema = new Schema<INotification>({

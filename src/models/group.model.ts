@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
-const { Schema } = mongoose;
+import mongoose, { Schema, Types } from 'mongoose';
 
 export interface IGroup {
     ownerId: string;
     groupName: string;
     members: string[];
+    _id?: Types.ObjectId;
 };
 
 const GroupSchema = new Schema<IGroup>({
