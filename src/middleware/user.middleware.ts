@@ -1,13 +1,13 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/user.controller';
-const responseHandler = require('./_handlers/response.handler');
-const errHandler = require('./_handlers/err.handler');
-const source: string = 'userMiddleware';
+const responseHandler = require('./_handlers/response.handler'),
+    errHandler = require('./_handlers/err.handler'),
+    source: string = 'userMiddleware';
 
 const get = async (req: Request, res: Response): Promise<void> => {
-    let message: string | null = null;
-    let status: number = 200;
-    let user: object | null = null;
+    let message: string | null = null,
+        status: number = 200,
+        user: object | null = null;
 
     try {
         user = await controller.get(req.body);
@@ -23,8 +23,8 @@ const get = async (req: Request, res: Response): Promise<void> => {
 };
 
 const update = async (req: Request, res: Response): Promise<void> => {
-    let status: number = 200;
-    let user: object | null = null;
+    let status: number = 200,
+        user: object | null = null;
     const query = { ...req.body };
     delete query._id;
 

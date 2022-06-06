@@ -2,6 +2,7 @@ const checkKeys = (bodyKeys: string[], requiredKeys: string[], allowedKeys?: str
     const allKeys = allowedKeys ? [...requiredKeys, ...allowedKeys] : requiredKeys;
     const hasRequiredKeys = requiredKeys.every(key => bodyKeys.includes(key)),
         allKeysValid = bodyKeys.every(key => allKeys.includes(key));
+
     return hasRequiredKeys && allKeysValid;
 };
 
@@ -42,8 +43,8 @@ const checkAllowedValueTypes = (body: object): string => {
                 return `${typeof val}`;
             }
 
-            let elemTypeIsValid: boolean = true;
-            let failedIdx: number = 0;
+            let elemTypeIsValid: boolean = true,
+                failedIdx: number = 0;
             if (isArray) {
                 for (let [idx, elem] of val.entries()) {
                     if (typeof elem != elemType) {
@@ -71,8 +72,8 @@ const checkAllowedValueTypes = (body: object): string => {
     Object.keys(body).forEach(key => {
         if (!res) {
             let reqType: string = '';
-            const val: any = body[key as keyof typeof body];
-            const valType = typeof val;
+            const val: any = body[key as keyof typeof body],
+                valType = typeof val;
 
             switch (true) {
                 case numVals.includes(key): {
@@ -95,11 +96,7 @@ const checkAllowedValueTypes = (body: object): string => {
                 case strVals.includes(key): {
                     reqType = 'string';
 
-                    if (valType != reqType) {
-                        res = createMessage(key, reqType, valType);
-                    } else if (!stringIsValid(val, key)) {
-                        res = `invalid characters for key: ${key}`;
-                    }
+                    res = valType != reqType ? createMessage(key, reqType, valType) : !stringIsValid(val, key) ?`invalid characters for key: ${key}` : res;
                     break;
                 };
                 case strArrVals.includes(key): {

@@ -1,13 +1,13 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/game.controller';
-const responseHandler = require('./_handlers/response.handler');
+const responseHandler = require('./_handlers/response.handler'),
+    errHandler = require('./_handlers/err.handler'),
+    source: string = 'gameMiddleware';
 require('dotenv').config();
-const errHandler = require('./_handlers/err.handler');
-const source: string = 'gameMiddleware';
 
 const create = async (req: Request, res: Response): Promise<void> => {
-    let game: object | null = null;
-    let status: number = 200;
+    let game: object | null = null,
+        status: number = 200;
 
     try {
         game = await controller.create(
@@ -30,8 +30,9 @@ const create = async (req: Request, res: Response): Promise<void> => {
 };
 
 const get = async (req: Request, res: Response): Promise<void> => {
-    let game: object | null = null;
-    let status: number = 200;
+    let game: object | null = null,
+        status: number = 200;
+
     try {
         console.log(req.params);
         game = await controller.get(req.params);
@@ -43,8 +44,9 @@ const get = async (req: Request, res: Response): Promise<void> => {
 };
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
-    let games: object | null = null;
-    let status: number = 200;
+    let games: object | null = null,
+        status: number = 200;
+
     try {
         games = await controller.getAll(req.params.ownerId);
 
@@ -56,10 +58,11 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 };
 
 const update = async (req: Request, res: Response): Promise<void> => {
-    let game: object | null = null;
-    let status: number = 200;
+    let game: object | null = null,
+        status: number = 200;
     const query = { ...req.body };
     delete query._id;
+
     try {
         game = await controller.update(req.body._id, query);
 
@@ -72,6 +75,7 @@ const update = async (req: Request, res: Response): Promise<void> => {
 
 const remove = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
+    
     try {
         await controller.remove(req.params._id);
 

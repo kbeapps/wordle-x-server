@@ -1,10 +1,10 @@
 import { Response, Request } from 'express';
 import userController from '../controllers/user.controller';
 import bcrypt from 'bcrypt';
-const responseHandler = require('./_handlers/response.handler');
+const responseHandler = require('./_handlers/response.handler'),
+    errHandler = require('./_handlers/err.handler'),
+    source: string = 'authMiddleware';
 require('dotenv').config();
-const errHandler = require('./_handlers/err.handler');
-const source: string = 'authMiddleware';
 
 const hashPassword = async (password: string) => {
     try {
@@ -24,8 +24,9 @@ const confirmPassword = async (password: string, hash: string) => {
 };
 
 const signup = async (req: Request, res: Response): Promise<void> => {
-    let message: string = '';
-    let status: number = 200;
+    let message: string = '',
+        status: number = 200,
+        hashedPassword: string = '';
 
     const isDupEmail = async (email: string) => {
         try {
@@ -63,8 +64,6 @@ const signup = async (req: Request, res: Response): Promise<void> => {
         };
     };
 
-    let hashedPassword: string = '';
-
     if (!await isDupEmail(req.body.email) && !await isDupUsername(req.body.username)) {
         try {
             hashedPassword = await hashPassword(req.body.password);
@@ -85,24 +84,23 @@ const signup = async (req: Request, res: Response): Promise<void> => {
 };
 
 const signin = async (req: Request, res: Response): Promise<void> => {
-    let message: string = '';
-    let status: number = 200;
-
-    const userQuery = Object.keys(req.body).includes('email') ? { email: req.body.email } : { username: req.body.username };
-
     interface IUser {
         password: string,
         friends?: string[],
         games?: string[],
         groups?: string[]
     }
+    
+    let message: string = '',
+        passwordIsValid: boolean = false,
+        status: number = 200,
+        user: IUser = {
+            password: ''
+        };
 
-    let user: IUser = {
-        password: ''
-    };
+    const userQuery = Object.keys(req.body).includes('email') ? { email: req.body.email } : { username: req.body.username };
 
     try {
-
         const foundUser = await userController.get(userQuery);
         if (foundUser) {
             user = foundUser;
@@ -115,8 +113,6 @@ const signin = async (req: Request, res: Response): Promise<void> => {
         errHandler(source, err);
         status = 500;
     }
-
-    let passwordIsValid: boolean = false;
 
     if (Object.keys(user).length > 1) {
         try {
