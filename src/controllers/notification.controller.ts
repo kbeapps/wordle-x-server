@@ -1,13 +1,13 @@
-import Notification from '../models/notification.model';
+import Notification, { INotification } from '../models/notification.model';
 
 const create = async (userId: string, message: string) => {
-    const notification = new Notification({
+    const notification: INotification = new Notification({
         userId: userId,
         message: message
     });
 
     try {
-        return await notification.save();
+        return await notification.save() as INotification;
     } catch (err) {
         throw new Error(String(err));
     };
@@ -15,7 +15,7 @@ const create = async (userId: string, message: string) => {
 
 const getAll = async (userId: string) => {
     try {
-        return await Notification.find({ userId: userId });
+        return await Notification.find({ userId: userId }) as INotification[];
     } catch (err) {
         throw new Error(String(err));
     };

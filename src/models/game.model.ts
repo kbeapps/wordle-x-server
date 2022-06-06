@@ -1,6 +1,6 @@
-import mongoose, { Schema, Types } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
 
-export interface IGame {
+export interface IGame extends Document {
     name: string;
     ownerId: Types.ObjectId;
     players: string[];

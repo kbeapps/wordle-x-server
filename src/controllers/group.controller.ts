@@ -1,14 +1,14 @@
-import Group from '../models/group.model';
+import Group, { IGroup } from '../models/group.model';
 
 const create = async (ownerId: string, groupName: string, members: string[]) => {
-    const group = new Group({
+    const group: IGroup = new Group({
         ownerId: ownerId,
         groupName: groupName,
         members: members
     });
 
     try {
-        return await group.save();
+        return await group.save() as IGroup;
     } catch (err) {
         throw new Error(String(err));
     };
@@ -16,7 +16,7 @@ const create = async (ownerId: string, groupName: string, members: string[]) => 
 
 const get = async (query: object) => {
     try {
-        return await Group.findOne(query);
+        return await Group.findOne(query) as IGroup;
     } catch (err) {
         throw new Error(String(err));
     };
@@ -24,7 +24,7 @@ const get = async (query: object) => {
 
 const getAll = async (query: object) => {
     try {
-        return await Group.find(query);
+        return await Group.find(query) as IGroup[];
     } catch (err) {
         throw new Error(String(err));
     };
@@ -34,7 +34,7 @@ const update = async (_id: string, query: object) => {
     try {
         return await Group.findByIdAndUpdate(
             _id, query, { new: true }
-        );
+        ) as IGroup;
     } catch (err) {
         throw new Error(String(err));
     }

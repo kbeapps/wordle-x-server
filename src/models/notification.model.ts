@@ -1,6 +1,6 @@
-import mongoose, { Schema, Types } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
 
-export interface INotification {
+export interface INotification extends Document {
     userId: Types.ObjectId,
     message: string,
     _id?: Types.ObjectId;
