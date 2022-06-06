@@ -22,9 +22,9 @@ const get = async (query: object) => {
     };
 };
 
-const getAll = async (userId: string) => {
+const getAll = async (query: object) => {
     try {
-        return await Group.find({ members: userId });
+        return await Group.find(query);
     } catch (err) {
         throw new Error(String(err));
     };
