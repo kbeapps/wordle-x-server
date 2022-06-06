@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-const { Schema } = mongoose;
+import mongoose, { Schema, Types } from 'mongoose';
 
 export interface IUser {
     email: string;
@@ -9,6 +8,7 @@ export interface IUser {
     games?: string[],
     friends?: string[],
     groups?: string[],
+    _id?: Types.ObjectId;
 };
 
 const UserSchema = new Schema<IUser>({

@@ -19,7 +19,7 @@ const get = (req: Request, res: Response, next: NextFunction) => {
 const update = (req: Request, res: Response, next: NextFunction) => {
     const requiredKeys: string[] = ['_id'],
         allowedKeys: string[] = ['email', 'username', 'password', 'avatar', 'games', 'friends', 'groups'],
-        minMaxKeys: string = '1/7',
+        minMaxKeys: string = '2/7',
         validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
 
     if (validationError) {

@@ -1,10 +1,8 @@
-import mongoose from 'mongoose';
-const { Schema } = mongoose;
+import mongoose, { Schema, Types } from 'mongoose';
 
 export interface IGame {
-    id: string;
     name: string;
-    ownerId: string;
+    ownerId: Types.ObjectId;
     players: string[];
     wordHistory: string[];
     boards?: object[];
@@ -12,11 +10,12 @@ export interface IGame {
     winCondition: string,
     wordSize: number,
     theme?: string,
+    _id?: Types.ObjectId;
 };
 
 const GameSchema = new Schema<IGame>({
     name: { type: String, required: true, minLength: 2, maxLength: 16 },
-    ownerId: { type: String, required: true },
+    ownerId: { type: Schema.Types.ObjectId, required: true },
     players: { type: [String], required: true, min: 1, max: 20 },
     wordHistory: { type: [String], required: true, min: 1, max: 365 },
     boards: { type: [Object] },
