@@ -3,9 +3,9 @@ const responseHandler = require('../_handlers/response.handler');
 const { processValidation } = require('./_helpers/process-validation.helpers');
 
 const signup = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['email', 'password', 'username'];
-    const minMaxKeys: string = '3/3';
-    const validationError = processValidation(minMaxKeys, req.body, requiredKeys);
+    const requiredKeys: string[] = ['email', 'password', 'username'],
+        minMaxKeys: string = '3/3',
+        validationError = processValidation(minMaxKeys, req.body, requiredKeys);
 
     if (validationError) {
         responseHandler(res, 400, 'signup', validationError);
@@ -16,10 +16,10 @@ const signup = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const signin = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['password'];
-    const allowedKeys: string[] = ['email', 'username'];
-    const minMaxKeys: string = '2/3';
-    const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
+    const requiredKeys: string[] = ['password'],
+        allowedKeys: string[] = ['email', 'username'],
+        minMaxKeys: string = '2/3',
+        validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
 
     if (validationError) {
         responseHandler(res, 400, 'signin', validationError);

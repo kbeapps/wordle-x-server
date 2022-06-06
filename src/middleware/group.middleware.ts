@@ -1,12 +1,12 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/group.controller';
-const responseHandler = require('./_handlers/response.handler');
-const errHandler = require('./_handlers/err.handler');
-const source: string = 'groupMiddleware';
+const responseHandler = require('./_handlers/response.handler'),
+    errHandler = require('./_handlers/err.handler'),
+    source: string = 'groupMiddleware';
 
 const create = async (req: Request, res: Response): Promise<void> => {
-    let status: number = 200;
-    let group: object | null = null;
+    let status: number = 200,
+        group: object | null = null;
 
     try {
         group = await controller.create(req.body.ownerId, req.body.groupName, req.body.members);
@@ -20,8 +20,8 @@ const create = async (req: Request, res: Response): Promise<void> => {
 };
 
 const get = async (req: Request, res: Response): Promise<void> => {
-    let status: number = 200;
-    let group: object | null = null;
+    let status: number = 200,
+        group: object | null = null;
 
     try {
         group = await controller.get(req.body);
@@ -35,8 +35,8 @@ const get = async (req: Request, res: Response): Promise<void> => {
 };
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
-    let status: number = 200;
-    let groups: object | null = null;
+    let status: number = 200,
+        groups: object | null = null;
 
     try {
         groups = await controller.getAll(req.body);
@@ -50,10 +50,11 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 };
 
 const update = async (req: Request, res: Response): Promise<void> => {
-    let status: number = 200;
-    let group: object | null = null;
+    let status: number = 200,
+        group: object | null = null;
     const query = { ...req.body };
     delete query._id;
+    
     try {
         group = await controller.update(req.body._id, query);
 

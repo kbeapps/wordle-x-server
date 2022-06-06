@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-const responseHandler = require('../_handlers/response.handler');
-const { processValidation } = require('./_helpers/process-validation.helpers');
+const responseHandler = require('../_handlers/response.handler'),
+    { processValidation } = require('./_helpers/process-validation.helpers');
 
 const create = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['userId', 'message'];
-    const minMaxKeys: string = '2/2';
-    const validationError = processValidation(minMaxKeys, req.body, requiredKeys);
+    const requiredKeys: string[] = ['userId', 'message'],
+        minMaxKeys: string = '2/2',
+        validationError = processValidation(minMaxKeys, req.body, requiredKeys);
 
     if (validationError) {
         responseHandler(res, 400, 'create', validationError);
@@ -17,9 +17,9 @@ const create = (req: Request, res: Response, next: NextFunction) => {
 
 
 const getAll = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['userId'];
-    const minMaxKeys: string = '1/1';
-    const validationError = processValidation(minMaxKeys, req.params, requiredKeys);
+    const requiredKeys: string[] = ['userId'],
+        minMaxKeys: string = '1/1',
+        validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
     if (validationError) {
         responseHandler(res, 400, 'getAll', validationError);
@@ -32,9 +32,9 @@ const getAll = (req: Request, res: Response, next: NextFunction) => {
 
 
 const remove = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['_id'];
-    const minMaxKeys: string = '1/1';
-    const validationError = processValidation(minMaxKeys, req.params, requiredKeys);
+    const requiredKeys: string[] = ['_id'],
+        minMaxKeys: string = '1/1',
+        validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
     if (validationError) {
         responseHandler(res, 400, 'remove', validationError);
@@ -45,9 +45,9 @@ const remove = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const removeAll = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['userId'];
-    const minMaxKeys: string = '1/1';
-    const validationError = processValidation(minMaxKeys, req.params, requiredKeys);
+    const requiredKeys: string[] = ['userId'],
+        minMaxKeys: string = '1/1',
+        validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
     if (validationError) {
         responseHandler(res, 400, 'removeAll', validationError);
