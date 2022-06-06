@@ -47,3 +47,6 @@ Notes.md
 
 # Test coverage files
 coverage/
+
+.DS_STORE
+test/.DS_STORE
