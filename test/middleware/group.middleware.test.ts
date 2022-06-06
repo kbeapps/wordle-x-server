@@ -1,5 +1,5 @@
-const router = require('../../src/routes');
-const request = require('supertest');
+const router = require('../../src/routes'),
+    request = require('supertest');
 import db from '../../src/models';
 import Group from '../../src/models/group.model';
 import User from '../../src/models/user.model';

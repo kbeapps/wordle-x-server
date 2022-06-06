@@ -1,40 +1,43 @@
-const router = require('../../src/routes');
-const request = require('supertest');
+const router = require('../../src/routes'),
+    request = require('supertest');
 import db from '../../src/models';
 import Game, { IGame } from '../../src/models/game.model';
 import User, { IUser } from '../../src/models/user.model';
 import { Types } from 'mongoose';
 
+const source: string = 'game tests';
 let testUser: IUser = new User({
     email: 'gameMidTestUser@test.com',
     password: '123456',
     username: 'gameMidTestUser'
-});
+}),
+    testGame: IGame = new Game({
+        name: 'test game name',
+        ownerId: new Types.ObjectId(),
+        players: [''],
+        wordHistory: ['test'],
+        type: 'custom',
+        winCondition: 'score',
+        wordSize: 4,
+    }),
+    deleteGameSuccessful: boolean = true;
 
-let testGame: IGame = new Game({
-    name: 'test game name',
-    ownerId: new Types.ObjectId(),
-    players: [''],
-    wordHistory: ['test'],
-    type: 'custom',
-    winCondition: 'score',
-    wordSize: 4,
-});
-
-let deleteGameSuccessful: boolean = true;
-
-describe('game middleware', () => {
+describe('Game middleware', () => {
     beforeAll(async () => {
-        await db.mongoose.connect(db.url);
+        try {
+            await db.mongoose.connect(db.url);
 
-        await request(router).post('/auth/signup').send({
-            email: testUser.email,
-            username: testUser.username,
-            password: testUser.password
-        });
+            await request(router).post('/auth/signup').send({
+                email: testUser.email,
+                username: testUser.username,
+                password: testUser.password
+            });
 
-        testUser = await User.findOne({ email: testUser.email }) as IUser;
-        testGame.players = [testUser._id ? testUser._id.toString() : ''];
+            testUser = await User.findOne({ email: testUser.email }) as IUser;
+            testGame.players = [testUser._id ? testUser._id.toString() : ''];
+        } catch (err) {
+            console.log(`Error in ${source} setup: `, err);
+        }
     });
 
     describe('POST /game/create', () => {
@@ -133,7 +136,7 @@ describe('game middleware', () => {
                 await User.findByIdAndDelete(testUser._id);
             }
         } catch (err) {
-            console.log('afterAll err in game tests: ', err);
+            console.log(`Error in ${source} teardown: `, err);
         } finally {
             await db.mongoose.connection.close();
         }
