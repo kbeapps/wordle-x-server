@@ -7,9 +7,9 @@ import { Types } from 'mongoose';
 
 const source: string = 'game tests';
 let testUser: IUser = new User({
-    email: 'gameMidTestUser@test.com',
+    email: 'gamemidtestuser@test.com',
     password: '123456',
-    username: 'gameMidTestUser'
+    username: 'gamemidtestuser'
 }),
     testGame: IGame = new Game({
         name: 'test game name',
@@ -55,7 +55,7 @@ describe('Game middleware', () => {
                 };
                 const res = await request(router).post(route).send(createGame);
                 expect(res.statusCode).toBe(200);
-                if (res) {
+                if (res && res.statusCode === 200) {
                     testGame = await Game.findOne({ ownerId: testUser._id }) as IGame;
                 }
             });
