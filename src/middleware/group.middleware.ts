@@ -24,7 +24,7 @@ const get = async (req: Request, res: Response): Promise<void> => {
     let group: object | null = null;
 
     try {
-        group = await controller.get(req.body.query);
+        group = await controller.get(req.body);
 
     } catch (err) {
         status = 500;
@@ -39,7 +39,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
     let groups: object | null = null;
 
     try {
-        groups = await controller.getAll(req.params.userId);
+        groups = await controller.getAll(req.body);
 
     } catch (err) {
         status = 500;
@@ -52,9 +52,10 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 const update = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
     let group: object | null = null;
-
+    const query = { ...req.body };
+    delete query._id;
     try {
-        group = await controller.update(req.body._id, req.body.query);
+        group = await controller.update(req.body._id, query);
 
     } catch (err) {
         status = 500;
