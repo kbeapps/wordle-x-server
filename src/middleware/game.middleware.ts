@@ -34,7 +34,6 @@ const get = async (req: Request, res: Response): Promise<void> => {
         status: number = 200;
 
     try {
-        console.log(req.params);
         game = await controller.get(req.params);
     } catch (err) {
         status = 500;
@@ -52,7 +51,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 
     } catch (err) {
         status = 500;
-        console.log(err);
+        errHandler(source, err);
     };
     responseHandler(res, status, 'getAllGames', games);
 };
@@ -75,7 +74,7 @@ const update = async (req: Request, res: Response): Promise<void> => {
 
 const remove = async (req: Request, res: Response): Promise<void> => {
     let status: number = 200;
-    
+
     try {
         await controller.remove(req.params._id);
 

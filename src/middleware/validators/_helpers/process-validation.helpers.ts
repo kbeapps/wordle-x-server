@@ -22,7 +22,6 @@ const checkAllowedValueTypes = (body: object): string => {
             case '_id':
             case 'ownerId': {
                 regex = /^[a-zA-Z0-9]{24,24}$/;
-                console.log('test');
                 break;
             }
             case 'username': {
@@ -96,7 +95,7 @@ const checkAllowedValueTypes = (body: object): string => {
                 case strVals.includes(key): {
                     reqType = 'string';
 
-                    res = valType != reqType ? createMessage(key, reqType, valType) : !stringIsValid(val, key) ?`invalid characters for key: ${key}` : res;
+                    res = valType != reqType ? createMessage(key, reqType, valType) : !stringIsValid(val, key) ? `invalid characters for key: ${key}` : res;
                     break;
                 };
                 case strArrVals.includes(key): {
@@ -120,10 +119,11 @@ const checkAllowedValueTypes = (body: object): string => {
 
 const processValidation = (minMaxKeys: string, body: object, requiredKeys: string[], allowedKeys?: string[]): string | null => {
     let res: string | null = null;
-    const bodyKeys: string[] = Object.keys(body);
-
-    if (!bodyKeys.length) {
-        return 'invalid params/body.  No content';
+    const bodyKeys: string[] = Object.keys(body),
+        bodyKeysLen: number = bodyKeys.length,
+        minKeys: number = Number(minMaxKeys[0]);
+    if (bodyKeysLen < minKeys) {
+        return `Invalid Keys Length.  Expected: ${minMaxKeys}.  Received: ${bodyKeysLen}`;
     }
 
     const keysChecked = allowedKeys ? checkKeys(bodyKeys, requiredKeys, allowedKeys) : checkKeys(bodyKeys, requiredKeys);
