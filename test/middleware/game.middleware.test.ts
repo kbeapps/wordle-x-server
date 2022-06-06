@@ -24,7 +24,7 @@ let testUser: ITestUser | null = {
 //     username: string
 // }
 
-let testGame: IGame = {
+let testGame = {
     _id: '',
     name: 'test game name',
     ownerId: '',
@@ -71,7 +71,7 @@ describe('game middleware', () => {
                 const res = await request(router).post(route).send(createGame);
                 expect(res.statusCode).toBe(200);
                 if (res) {
-                    testGame = await Game.findOne({ ownerId: testGame.ownerId });;
+                    // testGame = await Game.findOne({ ownerId: testGame.ownerId });;
                 }
             });
         });
