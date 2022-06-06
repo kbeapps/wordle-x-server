@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 export interface IGame {
+    id: string;
     name: string;
     ownerId: string;
     players: string[];

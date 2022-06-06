@@ -37,17 +37,18 @@ describe('POST /auth/signup', () => {
 describe('POST /auth/signin', () => {
     describe('given a email & password', () => {
         test('should respond with status 200', async () => {
-            const res = await request(router).post('/auth/signin').send({
+            const res = await request(router).get('/auth/signin').send({
                 email: testUser.email,
                 password: testUser.password
             });
+            console.log('res: ', res.statusCode);
             expect(res.statusCode).toBe(200);
         });
     });
 
     describe('given a username & password', () => {
         test('should respond with status 200', async () => {
-            const res = await request(router).post('/auth/signin').send({
+            const res = await request(router).get('/auth/signin').send({
                 username: testUser.username,
                 password: testUser.password
             });
@@ -57,7 +58,7 @@ describe('POST /auth/signin', () => {
 
     describe('something is missing', () => {
         test('should respond with status 400', async () => {
-            const res = await request(router).post('/auth/signin').send({
+            const res = await request(router).get('/auth/signin').send({
                 username: testUser.password
             });
             expect(res.statusCode).toBe(400);
