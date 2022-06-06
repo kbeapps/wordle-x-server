@@ -1,13 +1,13 @@
 import mongoose, { Schema, Types } from 'mongoose';
 
 export interface INotification {
-    userId: string,
+    userId: Types.ObjectId,
     message: string,
     _id?: Types.ObjectId;
 };
 
 const NotificationSchema = new Schema<INotification>({
-    userId: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, required: true },
     message: { type: String, required: true }
 }, { timestamps: true });
 

@@ -20,9 +20,9 @@ let testUser: IUser = new User({
         winCondition: 'score',
         wordSize: 4,
     }),
-    deleteGameSuccessful: boolean = true;
+    deleteGameSuccessful: boolean = false;
 
-describe('Game middleware', () => {
+describe('Game Routes', () => {
     beforeAll(async () => {
         try {
             await db.mongoose.connect(db.url);
@@ -112,8 +112,8 @@ describe('Game middleware', () => {
         describe('given a gameId in Params', () => {
             test('should respond with status 200', async () => {
                 const res = await request(router).delete(`${route}/${testGame._id}`).send();
-                if (!res) {
-                    deleteGameSuccessful = false;
+                if (res) {
+                    deleteGameSuccessful = true;
                 }
                 expect(res.statusCode).toBe(200);
             });

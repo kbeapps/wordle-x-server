@@ -10,7 +10,7 @@ const source: string = 'auth tests',
         password: 'test123'
     });
 
-describe('Auth middleware tests:', () => {
+describe('Auth Routes', () => {
     beforeAll(async () => {
         try {
             await db.mongoose.connect(db.url);

@@ -16,7 +16,7 @@ let testUser: IUser = new User({
 
 const source: string = 'group tests';
 
-describe('Group middleware', () => {
+describe('Group Routes', () => {
     beforeAll(async () => {
         try {
             await db.mongoose.connect(db.url);
