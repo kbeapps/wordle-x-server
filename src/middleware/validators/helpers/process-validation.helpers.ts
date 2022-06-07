@@ -43,18 +43,18 @@ const checkAllowedValueTypes = (body: object): string => {
     return regex.test(strToValidate);
   };
 
-  const getArrayErrors = (elementType: string, value: any): string | undefined => {
-    const isArray = Array.isArray(value);
+  const getArrayErrors = (elementType: string, shouldBeArray: any): string | undefined => {
+    const isArray = Array.isArray(shouldBeArray);
 
     if (!isArray) {
-      return `${typeof value}`;
+      return `${typeof shouldBeArray}`;
     }
 
     let elemTypeIsValid: boolean = true;
     let failedIdx: number = 0;
     if (isArray) {
-      for (const [index, element] of value.entries()) {
-        if (typeof element != elementType) {
+      for (const [index, element] of shouldBeArray.entries()) {
+        if (typeof element !== elementType) {
           failedIdx = index;
           elemTypeIsValid = false;
           break;
@@ -62,17 +62,28 @@ const checkAllowedValueTypes = (body: object): string => {
       }
     }
 
-    return !elemTypeIsValid ? `${typeof value[failedIdx]}[]` : undefined;
+    return !elemTypeIsValid ? `${typeof shouldBeArray[failedIdx]}[]` : undefined;
   };
 
-  const createMessage = (key: string, reqValType: string, recValType: string): string => {
-    return `Invalid value type for key: ${key}. Expected type: ${reqValType}. Received type: ${recValType}.`;
+  const createMessage = (
+    key: string,
+    requiredValueType: string,
+    receivedValueType: string
+  ): string => {
+    return `Invalid value type for key: ${key}. Expected type: ${requiredValueType}. Received type: ${receivedValueType}.`;
   };
 
-  const numVals: string[] = ['wordSize'];
-  const objArrVals: string[] = ['boards'];
-  const strArrVals: string[] = ['players', 'wordHistory', 'members', 'games', 'friends', 'groups'];
-  const strVals: string[] = [
+  const numberTypeKeys: string[] = ['wordSize'];
+  const objectArrayTypeKeys: string[] = ['boards'];
+  const stringArrayTypeKeys: string[] = [
+    'players',
+    'wordHistory',
+    'members',
+    'games',
+    'friends',
+    'groups',
+  ];
+  const stringTypeKeys: string[] = [
     '_id',
     'name',
     'email',
@@ -90,57 +101,63 @@ const checkAllowedValueTypes = (body: object): string => {
 
   let res: string = '';
 
-  // TODO: Replace .foreach with for of
-  Object.keys(body).forEach((key) => {
-    if (!res) {
-      let reqType: string = '';
-      const val: any = body[key as keyof typeof body];
-      const valType = typeof val;
+  const bodyKeys = Object.keys(body);
+  let key: string = '';
 
-      switch (true) {
-        case numVals.includes(key): {
-          reqType = 'number';
+  for (const [index, element] of Object.keys(bodyKeys).entries()) {
+    key = bodyKeys[index];
+    let reqType: string = '';
 
-          if (valType != reqType) {
-            res = createMessage(key, reqType, valType);
-          }
-          break;
-        }
-        case objArrVals.includes(key): {
-          reqType = 'object[]';
-          const arrError = getArrayErrors('object', val);
+    const valueToCheck: any = body[key as keyof typeof body];
+    const valueToCheckType = typeof valueToCheck;
 
-          if (arrError) {
-            res = createMessage(key, reqType, arrError);
-          }
-          break;
-        }
-        case strVals.includes(key): {
-          reqType = 'string';
+    switch (true) {
+      case numberTypeKeys.includes(key): {
+        reqType = 'number';
 
-          res =
-            valType != reqType
-              ? createMessage(key, reqType, valType)
-              : !stringIsValid(val, key)
-              ? `invalid characters for key: ${key}`
-              : res;
-          break;
+        if (valueToCheckType !== reqType) {
+          res = createMessage(key, reqType, valueToCheckType);
         }
-        case strArrVals.includes(key): {
-          reqType = 'string[]';
-          const arrError = getArrayErrors('string', val);
+        break;
+      }
+      case objectArrayTypeKeys.includes(key): {
+        reqType = 'object[]';
+        const arrError = getArrayErrors('object', valueToCheck);
 
-          if (arrError) {
-            res = createMessage(key, reqType, arrError);
-          }
-          break;
+        if (arrError) {
+          res = createMessage(key, reqType, arrError);
         }
-        default: {
-          break;
+        break;
+      }
+      case stringArrayTypeKeys.includes(key): {
+        reqType = 'string[]';
+        const arrError = getArrayErrors('string', valueToCheck);
+
+        if (arrError) {
+          res = createMessage(key, reqType, arrError);
         }
+        break;
+      }
+      case stringTypeKeys.includes(key): {
+        reqType = 'string';
+
+        res =
+          valueToCheckType !== reqType
+            ? createMessage(key, reqType, valueToCheckType)
+            : !stringIsValid(valueToCheck, key)
+            ? `invalid characters for key: ${key}`
+            : res;
+        break;
+      }
+      default: {
+        break;
       }
     }
-  });
+
+    if (res) {
+      break;
+    }
+  }
 
   return res;
 };

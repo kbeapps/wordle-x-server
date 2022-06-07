@@ -16,7 +16,7 @@ const initServer = async () => {
     util.errHandler('server', String(err));
     process.exit();
   }
-
+  var x = 12;
   const port = process.env.PORT || 3000;
 
   router.listen(port, () => {
