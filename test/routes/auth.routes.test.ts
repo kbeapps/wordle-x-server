@@ -3,7 +3,7 @@ import request from 'supertest';
 import db from '../../src/models';
 import User, { IUser } from '../../src/models/user.model';
 
-const dbUrl: string = process.env.TEST_DB_URL || '';
+const dbUrl: string = process.env.LOCAL_DB_URL || '';
 const source: string = 'auth tests',
   testUser: IUser = new User({
     email: 'test@test.com',

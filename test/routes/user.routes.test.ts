@@ -3,7 +3,7 @@ import request from 'supertest';
 import db from '../../src/models';
 import User, { IUser } from '../../src/models/user.model';
 
-const dbUrl: string = process.env.TEST_DB_URL || '';
+const dbUrl: string = process.env.LOCAL_DB_URL || '';
 const source: string = 'user tests';
 let testUser: IUser = new User({
   email: 'usermidtest@test.com',
@@ -33,27 +33,21 @@ describe('User Routes', () => {
 
     describe('Given a User ID', () => {
       test('Should respond with status 200', async () => {
-        const res = await request(router)
-          .get(route)
-          .send({ _id: testUser._id });
+        const res = await request(router).get(route).send({ _id: testUser._id });
         expect(res.statusCode).toBe(200);
       });
     });
 
     describe('Given a User Email', () => {
       test('Should respond with status 200', async () => {
-        const res = await request(router)
-          .get(route)
-          .send({ email: testUser.email });
+        const res = await request(router).get(route).send({ email: testUser.email });
         expect(res.statusCode).toBe(200);
       });
     });
 
     describe('Given a Username', () => {
       test('Should respond with status 200', async () => {
-        const res = await request(router)
-          .get(route)
-          .send({ username: testUser.username });
+        const res = await request(router).get(route).send({ username: testUser.username });
         expect(res.statusCode).toBe(200);
       });
     });
@@ -94,9 +88,7 @@ describe('User Routes', () => {
 
     describe('Given a User ID in params', () => {
       test('Should respond with status 200', async () => {
-        const res = await request(router)
-          .delete(`${route}/${testUser._id}`)
-          .send();
+        const res = await request(router).delete(`${route}/${testUser._id}`).send();
         expect(res.statusCode).toBe(200);
         if (res && res.statusCode === 200) {
           deleteUserSuccessful = true;

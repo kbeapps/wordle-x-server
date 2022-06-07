@@ -1,12 +1,10 @@
 import router from '../../src/routes';
 import request from 'supertest';
 import db from '../../src/models';
-import Notification, {
-  INotification,
-} from '../../src/models/notification.model';
+import Notification, { INotification } from '../../src/models/notification.model';
 import User, { IUser } from '../../src/models/user.model';
 
-const dbUrl: string = process.env.TEST_DB_URL || '';
+const dbUrl: string = process.env.LOCAL_DB_URL || '';
 const source: string = 'notification tests';
 
 let testUser: IUser = new User({
@@ -60,9 +58,7 @@ describe('Notification Routes', () => {
 
     describe('given a userId in params', () => {
       test('should respond with status 200', async () => {
-        const res = await request(router)
-          .get(`${route}/${testUser._id}`)
-          .send();
+        const res = await request(router).get(`${route}/${testUser._id}`).send();
         expect(res.statusCode).toBe(200);
       });
     });
@@ -79,9 +75,7 @@ describe('Notification Routes', () => {
     const route = '/notification/remove';
     describe('given a userId in params', () => {
       test('should respond with status 200', async () => {
-        const res = await request(router)
-          .delete(`${route}/${testNotification._id}`)
-          .send();
+        const res = await request(router).delete(`${route}/${testNotification._id}`).send();
         expect(res.statusCode).toBe(200);
         if (res) {
           deleteNotificationSuccessful = true;

@@ -4,7 +4,7 @@ import db from '../../src/models';
 import Group, { IGroup } from '../../src/models/group.model';
 import User, { IUser } from '../../src/models/user.model';
 
-const dbUrl: string = process.env.TEST_DB_URL || '';
+const dbUrl: string = process.env.LOCAL_DB_URL || '';
 const source: string = 'group tests';
 
 let testUser: IUser = new User({
@@ -68,9 +68,7 @@ describe('Group Routes', () => {
 
     describe('Given a Group ID', () => {
       test('Should respond with status 200', async () => {
-        const res = await request(router)
-          .get(route)
-          .send({ _id: testGroup._id });
+        const res = await request(router).get(route).send({ _id: testGroup._id });
         expect(res.statusCode).toBe(200);
       });
     });

@@ -5,7 +5,7 @@ import Game, { IGame } from '../../src/models/game.model';
 import User, { IUser } from '../../src/models/user.model';
 import { Types } from 'mongoose';
 
-const dbUrl: string = process.env.TEST_DB_URL || '';
+const dbUrl: string = process.env.LOCAL_DB_URL || '';
 const source: string = 'game tests';
 let testUser: IUser = new User({
   email: 'gamemidtestuser@test.com',
@@ -78,9 +78,7 @@ describe('Game Routes', () => {
     describe('given a gameId in params', () => {
       const validRoute = route + `/${testGame._id}`;
       test('should respond with status 200', async () => {
-        const res = await request(router)
-          .get(validRoute)
-          .send({ _id: testGame._id });
+        const res = await request(router).get(validRoute).send({ _id: testGame._id });
         expect(res.statusCode).toBe(200);
       });
     });
@@ -106,9 +104,7 @@ describe('Game Routes', () => {
 
     describe('something is missing', () => {
       test('should respond with status 400', async () => {
-        const res = await request(router)
-          .patch(route)
-          .send({ _id: testGame._id });
+        const res = await request(router).patch(route).send({ _id: testGame._id });
         expect(res.statusCode).toBe(400);
       });
     });
@@ -118,9 +114,7 @@ describe('Game Routes', () => {
     const route = '/game/remove';
     describe('given a gameId in Params', () => {
       test('should respond with status 200', async () => {
-        const res = await request(router)
-          .delete(`${route}/${testGame._id}`)
-          .send();
+        const res = await request(router).delete(`${route}/${testGame._id}`).send();
         if (res) {
           deleteGameSuccessful = true;
         }
