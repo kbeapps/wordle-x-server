@@ -32,28 +32,28 @@ describe('User Routes', () => {
     const route = '/user/get';
 
     describe('Given a User ID', () => {
-      test('Should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).get(route).send({ _id: testUser._id });
         expect(res.statusCode).toBe(200);
       });
     });
 
     describe('Given a User Email', () => {
-      test('Should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).get(route).send({ email: testUser.email });
         expect(res.statusCode).toBe(200);
       });
     });
 
     describe('Given a Username', () => {
-      test('Should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).get(route).send({ username: testUser.username });
         expect(res.statusCode).toBe(200);
       });
     });
 
     describe('Missing information', () => {
-      test('Should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const res = await request(router).get(route).send();
         expect(res.statusCode).toBe(400);
       });
@@ -64,7 +64,7 @@ describe('User Routes', () => {
     const route = '/user/update';
 
     describe('Given a username and User ID', () => {
-      test('Should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).patch(route).send({
           _id: testUser._id,
           username: 'updatedUsername',
@@ -74,7 +74,7 @@ describe('User Routes', () => {
     });
 
     describe('Missing information', () => {
-      test('Should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const res = await request(router).patch(route).send({
           _id: testUser._id,
         });
@@ -87,7 +87,7 @@ describe('User Routes', () => {
     const route = '/user/remove';
 
     describe('Given a User ID in params', () => {
-      test('Should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).delete(`${route}/${testUser._id}`).send();
         expect(res.statusCode).toBe(200);
         if (res && res.statusCode === 200) {
@@ -97,7 +97,7 @@ describe('User Routes', () => {
     });
 
     describe('Missing Params', () => {
-      test('Should respond with status 404', async () => {
+      it('should respond with status 404', async () => {
         const res = await request(router).delete(route).send();
         expect(res.statusCode).toBe(404);
       });

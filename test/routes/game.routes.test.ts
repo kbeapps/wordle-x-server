@@ -45,7 +45,7 @@ describe('Game Routes', () => {
   describe('POST /game/create', () => {
     const route = '/game/create';
     describe('given name, ownerId, players, wordHistory, type, winCondition & wordSize', () => {
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const createGame = {
           name: testGame.name,
           ownerId: testUser._id,
@@ -64,7 +64,7 @@ describe('Game Routes', () => {
     });
 
     describe('something is missing', () => {
-      test('should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const res = await request(router).post(route).send({
           name: 'game should fail',
         });
@@ -77,14 +77,14 @@ describe('Game Routes', () => {
     const route = '/game/get';
     describe('given a gameId in params', () => {
       const validRoute = route + `/${testGame._id}`;
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).get(validRoute).send({ _id: testGame._id });
         expect(res.statusCode).toBe(200);
       });
     });
 
     describe('missing params', () => {
-      test('should respond with status 404', async () => {
+      it('should respond with status 404', async () => {
         const res = await request(router).get(route).send();
         expect(res.statusCode).toBe(404);
       });
@@ -94,7 +94,7 @@ describe('Game Routes', () => {
   describe('PATCH /game/update', () => {
     const route = '/game/update';
     describe('given a game ID & object with key to update', () => {
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router)
           .patch(route)
           .send({ _id: testGame._id, name: 'updated test name' });
@@ -103,7 +103,7 @@ describe('Game Routes', () => {
     });
 
     describe('something is missing', () => {
-      test('should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const res = await request(router).patch(route).send({ _id: testGame._id });
         expect(res.statusCode).toBe(400);
       });
@@ -113,7 +113,7 @@ describe('Game Routes', () => {
   describe('DELETE /game/delete', () => {
     const route = '/game/remove';
     describe('given a gameId in Params', () => {
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).delete(`${route}/${testGame._id}`).send();
         if (res) {
           deleteGameSuccessful = true;
@@ -123,7 +123,7 @@ describe('Game Routes', () => {
     });
 
     describe('missing params', () => {
-      test('should respond with status 404', async () => {
+      it('should respond with status 404', async () => {
         const res = await request(router).delete(route).send();
         expect(res.statusCode).toBe(404);
       });

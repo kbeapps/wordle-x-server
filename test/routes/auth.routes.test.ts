@@ -22,7 +22,7 @@ describe('Auth Routes', () => {
 
   describe('POST /auth/signup', () => {
     describe('given a username, email & password', () => {
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).post('/auth/signup').send({
           email: testUser.email,
           username: testUser.username,
@@ -33,7 +33,7 @@ describe('Auth Routes', () => {
     });
 
     describe('something is missing', () => {
-      test('should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const wrongUser = {
           email: testUser.email,
           username: testUser.username,
@@ -46,7 +46,7 @@ describe('Auth Routes', () => {
 
   describe('POST /auth/signin', () => {
     describe('given a email & password', () => {
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).get('/auth/signin').send({
           email: testUser.email,
           password: testUser.password,
@@ -56,7 +56,7 @@ describe('Auth Routes', () => {
     });
 
     describe('given a username & password', () => {
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).get('/auth/signin').send({
           username: testUser.username,
           password: testUser.password,
@@ -66,7 +66,7 @@ describe('Auth Routes', () => {
     });
 
     describe('something is missing', () => {
-      test('should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const res = await request(router).get('/auth/signin').send({
           username: testUser.password,
         });

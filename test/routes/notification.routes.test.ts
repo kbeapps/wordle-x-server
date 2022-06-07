@@ -29,7 +29,7 @@ describe('Notification Routes', () => {
   describe('POST /notification/create', () => {
     const route = '/notification/create';
     describe('given a userId & message', () => {
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).post(route).send({
           message: testNotification.message,
           userId: testUser._id,
@@ -44,7 +44,7 @@ describe('Notification Routes', () => {
     });
 
     describe('something is missing', () => {
-      test('should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const res = await request(router).post(route).send({
           _id: testNotification._id,
         });
@@ -57,14 +57,14 @@ describe('Notification Routes', () => {
     const route = '/notification/getall';
 
     describe('given a userId in params', () => {
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).get(`${route}/${testUser._id}`).send();
         expect(res.statusCode).toBe(200);
       });
     });
 
     describe('missing params', () => {
-      test('should respond with status 404', async () => {
+      it('should respond with status 404', async () => {
         const res = await request(router).get(route).send();
         expect(res.statusCode).toBe(404);
       });
@@ -74,7 +74,7 @@ describe('Notification Routes', () => {
   describe('DELETE /notification/delete', () => {
     const route = '/notification/remove';
     describe('given a userId in params', () => {
-      test('should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).delete(`${route}/${testNotification._id}`).send();
         expect(res.statusCode).toBe(200);
         if (res) {
@@ -84,7 +84,7 @@ describe('Notification Routes', () => {
     });
 
     describe('missing params', () => {
-      test('should respond with status 404', async () => {
+      it('should respond with status 404', async () => {
         const res = await request(router).delete(route).send();
         expect(res.statusCode).toBe(404);
       });

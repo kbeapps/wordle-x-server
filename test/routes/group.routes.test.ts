@@ -37,7 +37,7 @@ describe('Group Routes', () => {
     const route = '/group/create';
 
     describe('Given a Group Name, OwnerId, and array of Member IDs', () => {
-      test('Should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).post(route).send({
           groupName: testGroup.groupName,
           ownerId: testUser._id,
@@ -53,7 +53,7 @@ describe('Group Routes', () => {
     });
 
     describe('Missing information', () => {
-      test('Should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const wrongGroup = {
           groupName: 'wrong name',
         };
@@ -67,14 +67,14 @@ describe('Group Routes', () => {
     const route = '/group/get';
 
     describe('Given a Group ID', () => {
-      test('Should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).get(route).send({ _id: testGroup._id });
         expect(res.statusCode).toBe(200);
       });
     });
 
     describe('Missing information', () => {
-      test('Should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const res = await request(router).get(route).send();
         expect(res.statusCode).toBe(400);
       });
@@ -85,7 +85,7 @@ describe('Group Routes', () => {
     const route = '/group/update';
 
     describe('Given an _id and group name', () => {
-      test('Should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).patch(route).send({
           _id: testUser._id,
           groupName: 'updated group name',
@@ -95,7 +95,7 @@ describe('Group Routes', () => {
     });
 
     describe('Given a groupId, members', () => {
-      test('Should respond with status 200', async () => {
+      it('should respond with status 200', async () => {
         const res = await request(router).patch(route).send({
           _id: testGroup._id,
           members: testGroup.members,
@@ -105,7 +105,7 @@ describe('Group Routes', () => {
     });
 
     describe('Missing information', () => {
-      test('Should respond with status 400', async () => {
+      it('should respond with status 400', async () => {
         const res = await request(router).patch(route).send({
           _id: testGroup._id,
         });
