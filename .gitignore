@@ -40,8 +40,11 @@ web_modules/
 
 Notes.md
 
+dist
+
 # Test coverage files
 coverage/
 
 .DS_STORE
 test/.DS_STORE
+

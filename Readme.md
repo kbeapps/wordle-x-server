@@ -25,8 +25,9 @@ Run `yarn test` to execute the unit tests via Jest.
 To Clone:
 `git clone https://github.com/kbeapps/wordle-x-server.git`
 
-- Once cloned, you will need to create a .env file that matches the .env.example file.
-- navigate to directory in terminal and use command `yarn dev` (only script options currently available: `dev` and `test`)
+- Once cloned, create a .env file that matches the .env.example file.
+- use `yarn dev` for development
+- run `yarn build` then `yarn start` for production
 
 ## License
 
