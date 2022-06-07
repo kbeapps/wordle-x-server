@@ -114,24 +114,6 @@ describe('Group Routes', () => {
     });
   });
 
-  // describe('DELETE /group/remove', () => {
-  //     const route = '/group/remove';
-
-  //     describe('Given a Group ID in Params', () => {
-  //         test('Should respond with status 200', async () => {
-  //             const res = await request(router).post(`${route}/${testGroup._id}`).send();
-  //             expect(res.statusCode).toBe(200);
-  //         });
-  //     });
-
-  //     describe('Missing information', () => {
-  //         test('Should respond with status 400', async () => {
-  //             const res = await request(router).get(route).send();
-  //             expect(res.statusCode).toBe(400);
-  //         });
-  //     });
-  // });
-
   afterAll(async () => {
     try {
       await Group.findByIdAndDelete({ _id: testGroup._id });
