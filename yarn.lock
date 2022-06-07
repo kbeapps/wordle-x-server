@@ -3297,11 +3297,6 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-peerdeps@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/peerdeps/-/peerdeps-1.1.1.tgz#b0a955f4ebf94b79ce9ba1046b12e38c85aef150"
-  integrity sha512-avsxijM7afBNEV7vTAD6D2bXiP+A4ltvhEQ3t6cUegZvLu/RfT8TQO4Uam2ximER3LiQ+PCpC3El6GtF7QajSw==
-
 picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
