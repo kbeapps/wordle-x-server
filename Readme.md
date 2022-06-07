@@ -6,6 +6,7 @@ API Server for Multiplayer Wordle Application.
 
 ## Development/Test server
 
+- either use and configure your own MongoDb server or follow these steps to setup a local server:
 - install Docker (https://www.docker.com/)
 - use cmd in terminal: docker-compose up -d
 
