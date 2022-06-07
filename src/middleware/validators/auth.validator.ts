@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import util from '../../utils';
+import utils from '../../utils';
 import { processValidation } from './helpers/process-validation.helpers';
 
 const signup = (req: Request, res: Response, next: NextFunction): void => {
@@ -8,7 +8,7 @@ const signup = (req: Request, res: Response, next: NextFunction): void => {
   const validationError = processValidation(minMaxKeys, req.body, requiredKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'signup', undefined, validationError);
+    utils.responseHandler(res, 400, 'signup', undefined, validationError);
     return;
   }
 
@@ -22,7 +22,7 @@ const signin = (req: Request, res: Response, next: NextFunction): void => {
   const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'signin', undefined, validationError);
+    utils.responseHandler(res, 400, 'signin', undefined, validationError);
     return;
   }
 

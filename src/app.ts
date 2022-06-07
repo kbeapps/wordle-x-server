@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import router from './routes/index';
-import util from './utils';
+import utils from './utils';
 import db from './models';
 
 dotenv.config();
@@ -13,7 +13,7 @@ const initServer = async () => {
       console.log('Database connection successful.');
     }
   } catch (err) {
-    util.errHandler('server', String(err));
+    utils.errHandler('server', String(err));
     process.exit();
   }
   var x = 12;

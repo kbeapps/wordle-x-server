@@ -1,7 +1,7 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/game.controller';
 import Game, { IGame } from '../models/game.model';
-import util from '../utils';
+import utils from '../utils';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -25,10 +25,10 @@ const create = async (req: Request, res: Response): Promise<void> => {
     )) as IGame;
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'createGame', game);
+  utils.responseHandler(res, status, 'createGame', game);
 };
 
 const get = async (req: Request, res: Response): Promise<void> => {
@@ -39,9 +39,9 @@ const get = async (req: Request, res: Response): Promise<void> => {
     game = await controller.get(req.params);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
-  util.responseHandler(res, status, 'getGame', game);
+  utils.responseHandler(res, status, 'getGame', game);
 };
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
@@ -52,9 +52,9 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
     games = await controller.getAll(req.params.ownerId);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
-  util.responseHandler(res, status, 'getAllGames', games);
+  utils.responseHandler(res, status, 'getAllGames', games);
 };
 
 const update = async (req: Request, res: Response): Promise<void> => {
@@ -68,9 +68,9 @@ const update = async (req: Request, res: Response): Promise<void> => {
     game = await controller.update(req.body._id, query);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
-  util.responseHandler(res, status, 'updateGame', game);
+  utils.responseHandler(res, status, 'updateGame', game);
 };
 
 const remove = async (req: Request, res: Response): Promise<void> => {
@@ -80,9 +80,9 @@ const remove = async (req: Request, res: Response): Promise<void> => {
     await controller.remove(req.params._id);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
-  util.responseHandler(res, status, 'deleteGame');
+  utils.responseHandler(res, status, 'deleteGame');
 };
 
 export { create, get, getAll, update, remove };

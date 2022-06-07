@@ -1,7 +1,7 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/notification.controller';
 import Notification, { INotification } from '../models/notification.model';
-import util from '../utils';
+import utils from '../utils';
 
 const source: string = 'notificationMiddleware';
 
@@ -13,10 +13,10 @@ const create = async (req: Request, res: Response): Promise<void> => {
     notification = await controller.create(req.body.userId, req.body.message);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'createNotification', notification);
+  utils.responseHandler(res, status, 'createNotification', notification);
 };
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
@@ -27,10 +27,10 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
     notifications = await controller.getAll(req.params.userId);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'getAllNotifications', notifications);
+  utils.responseHandler(res, status, 'getAllNotifications', notifications);
 };
 
 const remove = async (req: Request, res: Response): Promise<void> => {
@@ -40,10 +40,10 @@ const remove = async (req: Request, res: Response): Promise<void> => {
     await controller.remove(req.params._id);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'removeNotification');
+  utils.responseHandler(res, status, 'removeNotification');
 };
 
 const removeAll = async (req: Request, res: Response): Promise<void> => {
@@ -53,10 +53,10 @@ const removeAll = async (req: Request, res: Response): Promise<void> => {
     await controller.removeAll(req.params.userId);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'removeAllNotifications');
+  utils.responseHandler(res, status, 'removeAllNotifications');
 };
 
 export { create, getAll, remove, removeAll };

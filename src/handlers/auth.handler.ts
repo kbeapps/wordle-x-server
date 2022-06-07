@@ -2,7 +2,7 @@ import { Response, Request } from 'express';
 import userController from '../controllers/user.controller';
 import User, { IUser } from '../models/user.model';
 import bcrypt from 'bcrypt';
-import util from '../utils';
+import utils from '../utils';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -43,7 +43,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
 
       return false;
     } catch (err) {
-      util.errHandler(source, String(err));
+      utils.errHandler(source, String(err));
       status = 500;
       return true;
     }
@@ -63,7 +63,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
 
       return false;
     } catch (err) {
-      util.errHandler(source, String(err));
+      utils.errHandler(source, String(err));
       status = 500;
       return true;
     }
@@ -78,12 +78,12 @@ const signup = async (req: Request, res: Response): Promise<void> => {
       // Cookies eventually
       message = 'User created';
     } catch (err) {
-      util.errHandler(source, String(err));
+      utils.errHandler(source, String(err));
       status = 500;
     }
   }
 
-  util.responseHandler(res, status, 'signup', undefined, message);
+  utils.responseHandler(res, status, 'signup', undefined, message);
 };
 
 const signin = async (req: Request, res: Response): Promise<void> => {
@@ -105,7 +105,7 @@ const signin = async (req: Request, res: Response): Promise<void> => {
       status = 400;
     }
   } catch (err) {
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
     status = 500;
   }
 
@@ -113,7 +113,7 @@ const signin = async (req: Request, res: Response): Promise<void> => {
     try {
       passwordIsValid = await confirmPassword(req.body.password, user.password);
     } catch (err) {
-      util.errHandler(source, String(err));
+      utils.errHandler(source, String(err));
       status = 500;
     }
 
@@ -131,7 +131,7 @@ const signin = async (req: Request, res: Response): Promise<void> => {
       }
     : null;
 
-  util.responseHandler(res, status, 'signin', data ? data : undefined, message);
+  utils.responseHandler(res, status, 'signin', data ? data : undefined, message);
 };
 
 export { signup, signin };

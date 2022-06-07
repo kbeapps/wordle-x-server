@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import util from '../../utils';
+import utils from '../../utils';
 import { processValidation } from './helpers/process-validation.helpers';
 
 const create = (req: Request, res: Response, next: NextFunction): void => {
@@ -8,7 +8,7 @@ const create = (req: Request, res: Response, next: NextFunction): void => {
     validationError = processValidation(minMaxKeys, req.body, requiredKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'create', undefined, validationError);
+    utils.responseHandler(res, 400, 'create', undefined, validationError);
     return;
   }
 
@@ -21,7 +21,7 @@ const getAll = (req: Request, res: Response, next: NextFunction): void => {
     validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'getAll', undefined, validationError);
+    utils.responseHandler(res, 400, 'getAll', undefined, validationError);
     return;
   }
 
@@ -34,7 +34,7 @@ const remove = (req: Request, res: Response, next: NextFunction): void => {
     validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'remove', undefined, validationError);
+    utils.responseHandler(res, 400, 'remove', undefined, validationError);
     return;
   }
 
@@ -47,7 +47,7 @@ const removeAll = (req: Request, res: Response, next: NextFunction): void => {
     validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'removeAll', undefined, validationError);
+    utils.responseHandler(res, 400, 'removeAll', undefined, validationError);
     return;
   }
 

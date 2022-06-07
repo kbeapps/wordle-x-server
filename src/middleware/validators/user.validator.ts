@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import util from '../../utils';
+import utils from '../../utils';
 import { processValidation } from './helpers/process-validation.helpers';
 
 const get = (req: Request, res: Response, next: NextFunction): void => {
@@ -9,7 +9,7 @@ const get = (req: Request, res: Response, next: NextFunction): void => {
   const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'get', undefined, validationError);
+    utils.responseHandler(res, 400, 'get', undefined, validationError);
     return;
   }
 
@@ -31,7 +31,7 @@ const update = (req: Request, res: Response, next: NextFunction): void => {
   const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'update', undefined, validationError);
+    utils.responseHandler(res, 400, 'update', undefined, validationError);
     return;
   }
 
@@ -44,7 +44,7 @@ const remove = (req: Request, res: Response, next: NextFunction): void => {
   const validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'remove', undefined, validationError);
+    utils.responseHandler(res, 400, 'remove', undefined, validationError);
     return;
   }
 

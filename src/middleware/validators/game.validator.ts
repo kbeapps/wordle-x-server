@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import util from '../../utils';
+import utils from '../../utils';
 import { processValidation } from './helpers/process-validation.helpers';
 
 const create = (req: Request, res: Response, next: NextFunction): void => {
@@ -17,7 +17,7 @@ const create = (req: Request, res: Response, next: NextFunction): void => {
   const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'create game', undefined, validationError);
+    utils.responseHandler(res, 400, 'create game', undefined, validationError);
     return;
   }
 
@@ -31,7 +31,7 @@ const get = (req: Request, res: Response, next: NextFunction): void => {
   const validationError = processValidation(minMaxKeys, req.params, requiredKeys, allowedKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'get game', undefined, validationError);
+    utils.responseHandler(res, 400, 'get game', undefined, validationError);
     return;
   }
 
@@ -48,7 +48,7 @@ const getAll = (req: Request, res: Response, next: NextFunction): void => {
   );
 
   if (validationError) {
-    util.responseHandler(res, 400, 'get all games', undefined, validationError);
+    utils.responseHandler(res, 400, 'get all games', undefined, validationError);
     return;
   }
 
@@ -70,7 +70,7 @@ const update = (req: Request, res: Response, next: NextFunction): void => {
   const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'update game', undefined, validationError);
+    utils.responseHandler(res, 400, 'update game', undefined, validationError);
     return;
   }
 
@@ -83,7 +83,7 @@ const remove = (req: Request, res: Response, next: NextFunction): void => {
   const validationError = processValidation(minMaxKeys, { _id: req.params._id }, requiredKeys);
 
   if (validationError) {
-    util.responseHandler(res, 400, 'remove game', undefined, validationError);
+    utils.responseHandler(res, 400, 'remove game', undefined, validationError);
     return;
   }
 

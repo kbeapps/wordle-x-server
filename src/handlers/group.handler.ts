@@ -1,7 +1,7 @@
 import { Response, Request } from 'express';
 import controller from '../controllers/group.controller';
 import Group, { IGroup } from '../models/group.model';
-import util from '../utils';
+import utils from '../utils';
 
 const source: string = 'groupMiddleware';
 
@@ -13,10 +13,10 @@ const create = async (req: Request, res: Response): Promise<void> => {
     group = await controller.create(req.body.ownerId, req.body.groupName, req.body.members);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'createGroup', group);
+  utils.responseHandler(res, status, 'createGroup', group);
 };
 
 const get = async (req: Request, res: Response): Promise<void> => {
@@ -27,10 +27,10 @@ const get = async (req: Request, res: Response): Promise<void> => {
     group = await controller.get(req.body);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'getGroup', group);
+  utils.responseHandler(res, status, 'getGroup', group);
 };
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
@@ -41,10 +41,10 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
     groups = await controller.getAll(req.body);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'getAllGroups', groups);
+  utils.responseHandler(res, status, 'getAllGroups', groups);
 };
 
 const update = async (req: Request, res: Response): Promise<void> => {
@@ -58,10 +58,10 @@ const update = async (req: Request, res: Response): Promise<void> => {
     group = await controller.update(req.body._id, query);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'updateGroup', group);
+  utils.responseHandler(res, status, 'updateGroup', group);
 };
 
 const remove = async (req: Request, res: Response): Promise<void> => {
@@ -71,10 +71,10 @@ const remove = async (req: Request, res: Response): Promise<void> => {
     await controller.remove(req.params._id);
   } catch (err) {
     status = 500;
-    util.errHandler(source, String(err));
+    utils.errHandler(source, String(err));
   }
 
-  util.responseHandler(res, status, 'removeGroup');
+  utils.responseHandler(res, status, 'removeGroup');
 };
 
 export { create, get, getAll, update, remove };
