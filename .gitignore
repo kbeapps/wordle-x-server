@@ -38,11 +38,6 @@ web_modules/
 
 .vuepress/dist
 
-# .config
-# /config
-# config/
-# config.js
-
 Notes.md
 
 # Test coverage files
