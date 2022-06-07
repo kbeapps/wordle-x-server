@@ -26,6 +26,7 @@ To Clone:
 `git clone https://github.com/kbeapps/wordle-x-server.git`
 
 - Once cloned, create a .env file that matches the .env.example file.
+- use `yarn install` to install dependencies
 - use `yarn dev` for development
 - run `yarn build` then `yarn start` for production
 
