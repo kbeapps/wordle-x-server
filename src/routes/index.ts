@@ -20,5 +20,4 @@ router.use('/group', groupRoutes);
 router.use('/notification', notificationRoutes);
 router.use('/user', userRoutes);
 
-module.exports = router;
 export default router;
