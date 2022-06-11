@@ -10,7 +10,6 @@ import notificationRoutes from './notification.routes';
 import userRoutes from './user.routes';
 
 const origin = process.env.ALLOWED_ORIGIN;
-console.log('origin: ', origin);
 
 const corsOptions: object = {
   credentials: true,
