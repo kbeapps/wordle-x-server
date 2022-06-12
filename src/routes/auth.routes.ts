@@ -5,6 +5,6 @@ import * as validator from '../middleware/validators/auth.validator';
 const router = Router();
 
 router.post('/signup', [validator.signup], handler.signup);
-router.get('/signin', [validator.signin], handler.signin);
+router.post('/signin', [validator.signin], handler.signin);
 
 export default router;
