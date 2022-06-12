@@ -1,11 +1,27 @@
-import express from 'express';
+import * as dotenv from 'dotenv';
+import router from './routes/index';
+import utils from './utils';
+import db from './models';
 
-const app = express();
+dotenv.config();
 
-app.get('/', (req, res) => {
-    return res.send('nooooooope');
-});
+const initServer = async () => {
+  try {
+    const connected = await db.mongoose.connect(db.url ? db.url : '');
 
-app.listen(8080, () => {
-    console.log('I can hear you...');
-});
+    if (connected) {
+      console.log('Database connection successful.');
+    }
+  } catch (err) {
+    utils.errHandler('server', String(err));
+    process.exit();
+  }
+  var x = 12;
+  const port = process.env.PORT || 3000;
+
+  router.listen(port, () => {
+    console.log(`Connection successful.  Port: ${port}`);
+  });
+};
+
+initServer();
