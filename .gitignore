@@ -38,15 +38,13 @@ web_modules/
 
 .vuepress/dist
 
-.config
-/config
-config/
-config.js
-
 Notes.md
+
+dist
 
 # Test coverage files
 coverage/
 
 .DS_STORE
 test/.DS_STORE
+

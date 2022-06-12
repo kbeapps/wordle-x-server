@@ -1,10 +1,11 @@
 import { Router } from 'express';
-const middleware = require('../middleware/user.middleware');
-const validator = require('../middleware/validators/user.validator');
+import * as handler from '../handlers/user.handler';
+import * as validator from '../middleware/validators/user.validator';
+
 const router = Router();
 
-router.get('/get', [validator.get], middleware.get);
-router.patch('/update', [validator.update], middleware.update);
-router.delete('/remove/:_id', [validator.remove], middleware.remove);
+router.get('/get', [validator.get], handler.get);
+router.patch('/update', [validator.update], handler.update);
+router.delete('/remove/:_id', [validator.remove], handler.remove);
 
 export default router;

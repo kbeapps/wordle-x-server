@@ -1,62 +1,57 @@
 import { NextFunction, Request, Response } from 'express';
-const responseHandler = require('../_handlers/response.handler'),
-    { processValidation } = require('./_helpers/process-validation.helpers');
+import utils from '../../utils';
+import { processValidation } from './helpers/process-validation.helpers';
 
-const create = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['userId', 'message'],
-        minMaxKeys: string = '2/2',
-        validationError = processValidation(minMaxKeys, req.body, requiredKeys);
+const create = (req: Request, res: Response, next: NextFunction): void => {
+  const requiredKeys: string[] = ['userId', 'message'],
+    minMaxKeys: string = '2/2',
+    validationError = processValidation(minMaxKeys, req.body, requiredKeys);
 
-    if (validationError) {
-        responseHandler(res, 400, 'create', validationError);
-        return;
-    }
+  if (validationError) {
+    utils.responseHandler(res, 400, 'create', undefined, validationError);
+    return;
+  }
 
-    next();
+  next();
 };
 
+const getAll = (req: Request, res: Response, next: NextFunction): void => {
+  const requiredKeys: string[] = ['userId'],
+    minMaxKeys: string = '1/1',
+    validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
-const getAll = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['userId'],
-        minMaxKeys: string = '1/1',
-        validationError = processValidation(minMaxKeys, req.params, requiredKeys);
+  if (validationError) {
+    utils.responseHandler(res, 400, 'getAll', undefined, validationError);
+    return;
+  }
 
-    if (validationError) {
-        responseHandler(res, 400, 'getAll', validationError);
-        return;
-    }
-
-    next();
+  next();
 };
 
+const remove = (req: Request, res: Response, next: NextFunction): void => {
+  const requiredKeys: string[] = ['_id'],
+    minMaxKeys: string = '1/1',
+    validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
+  if (validationError) {
+    utils.responseHandler(res, 400, 'remove', undefined, validationError);
+    return;
+  }
 
-const remove = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['_id'],
-        minMaxKeys: string = '1/1',
-        validationError = processValidation(minMaxKeys, req.params, requiredKeys);
-
-    if (validationError) {
-        responseHandler(res, 400, 'remove', validationError);
-        return;
-    }
-
-    next();
+  next();
 };
 
-const removeAll = (req: Request, res: Response, next: NextFunction) => {
-    const requiredKeys: string[] = ['userId'],
-        minMaxKeys: string = '1/1',
-        validationError = processValidation(minMaxKeys, req.params, requiredKeys);
+const removeAll = (req: Request, res: Response, next: NextFunction): void => {
+  const requiredKeys: string[] = ['userId'],
+    minMaxKeys: string = '1/1',
+    validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
-    if (validationError) {
-        responseHandler(res, 400, 'removeAll', validationError);
-        return;
-    }
+  if (validationError) {
+    utils.responseHandler(res, 400, 'removeAll', undefined, validationError);
+    return;
+  }
 
-    next();
+  next();
 };
 
-export {
-    create, getAll, remove, removeAll
-};
+export { create, getAll, remove, removeAll };
