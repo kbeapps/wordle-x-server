@@ -10,7 +10,7 @@ const get = async (req: Request, res: Response): Promise<void> => {
   let user: IUser = new User();
 
   try {
-    user = await controller.get(req.body);
+    user = await controller.get({ [req.params.key]: req.params.value });
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));

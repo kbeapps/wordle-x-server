@@ -3,9 +3,9 @@ import utils from '../../utils';
 import { processValidation } from './helpers/process-validation.helpers';
 
 const create = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = ['userId', 'message'],
-    minMaxKeys: string = '2/2',
-    validationError = processValidation(minMaxKeys, req.body, requiredKeys);
+  const requiredKeys: string[] = ['userId', 'message'];
+  const minMaxKeys: string = '2/2';
+  const validationError = processValidation(minMaxKeys, req.body, requiredKeys);
 
   if (validationError) {
     utils.responseHandler(res, 400, 'create', undefined, validationError);
@@ -16,9 +16,10 @@ const create = (req: Request, res: Response, next: NextFunction): void => {
 };
 
 const getAll = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = ['userId'],
-    minMaxKeys: string = '1/1',
-    validationError = processValidation(minMaxKeys, req.params, requiredKeys);
+  const requiredKeys: string[] = ['userId'];
+  const minMaxKeys: string = '1/1';
+  const query: object = { [req.params.key]: req.params.value };
+  const validationError = processValidation(minMaxKeys, query, requiredKeys);
 
   if (validationError) {
     utils.responseHandler(res, 400, 'getAll', undefined, validationError);
@@ -29,9 +30,9 @@ const getAll = (req: Request, res: Response, next: NextFunction): void => {
 };
 
 const remove = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = ['_id'],
-    minMaxKeys: string = '1/1',
-    validationError = processValidation(minMaxKeys, req.params, requiredKeys);
+  const requiredKeys: string[] = ['_id'];
+  const minMaxKeys: string = '1/1';
+  const validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
   if (validationError) {
     utils.responseHandler(res, 400, 'remove', undefined, validationError);
@@ -42,9 +43,9 @@ const remove = (req: Request, res: Response, next: NextFunction): void => {
 };
 
 const removeAll = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = ['userId'],
-    minMaxKeys: string = '1/1',
-    validationError = processValidation(minMaxKeys, req.params, requiredKeys);
+  const requiredKeys: string[] = ['userId'];
+  const minMaxKeys: string = '1/1';
+  const validationError = processValidation(minMaxKeys, req.params, requiredKeys);
 
   if (validationError) {
     utils.responseHandler(res, 400, 'removeAll', undefined, validationError);

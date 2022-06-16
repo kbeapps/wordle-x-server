@@ -6,7 +6,8 @@ const get = (req: Request, res: Response, next: NextFunction): void => {
   const requiredKeys: string[] = [];
   const allowedKeys: string[] = ['email', 'username', '_id'];
   const minMaxKeys: string = '1/1';
-  const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
+  const query: object = { [req.params.key]: req.params.value };
+  const validationError = processValidation(minMaxKeys, query, requiredKeys, allowedKeys);
 
   if (validationError) {
     utils.responseHandler(res, 400, 'get', undefined, validationError);

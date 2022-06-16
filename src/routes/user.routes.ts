@@ -4,7 +4,7 @@ import * as validator from '../middleware/validators/user.validator';
 
 const router = Router();
 
-router.get('/get', [validator.get], handler.get);
+router.get('/get/:key/:value', [validator.get], handler.get);
 router.patch('/update', [validator.update], handler.update);
 router.delete('/remove/:_id', [validator.remove], handler.remove);
 

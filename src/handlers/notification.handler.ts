@@ -24,7 +24,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
   let status: number = 200;
 
   try {
-    notifications = await controller.getAll(req.params.userId);
+    notifications = await controller.getAll({ [req.params.key]: req.params.value });
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
