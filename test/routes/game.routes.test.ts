@@ -75,8 +75,8 @@ describe('Game Routes', () => {
 
   describe('GET /game/get', () => {
     const route = '/game/get';
-    describe('given a gameId in params', () => {
-      const validRoute = route + `/${testGame._id}`;
+    describe('given a key of _id & value of gameId in params', () => {
+      const validRoute = route + `/_id/${testGame._id}`;
       it('should respond with status 200', async () => {
         const res = await request(router).get(validRoute).send({ _id: testGame._id });
         expect(res.statusCode).toBe(200);

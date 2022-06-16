@@ -31,23 +31,23 @@ describe('User Routes', () => {
   describe('GET /user/get', () => {
     const route = '/user/get';
 
-    describe('Given a User ID', () => {
+    describe('Given a key of _id & value of userId', () => {
       it('should respond with status 200', async () => {
-        const res = await request(router).get(route).send({ _id: testUser._id });
+        const res = await request(router).get(`${route}/userId/${testUser._id}`).send();
         expect(res.statusCode).toBe(200);
       });
     });
 
-    describe('Given a User Email', () => {
+    describe('Given a key of email & value of users email', () => {
       it('should respond with status 200', async () => {
-        const res = await request(router).get(route).send({ email: testUser.email });
+        const res = await request(router).get(`${route}/email/${testUser.email}`).send();
         expect(res.statusCode).toBe(200);
       });
     });
 
-    describe('Given a Username', () => {
+    describe('Given a key of username & value of users username', () => {
       it('should respond with status 200', async () => {
-        const res = await request(router).get(route).send({ username: testUser.username });
+        const res = await request(router).get(`${route}/username/${testUser.username}`).send();
         expect(res.statusCode).toBe(200);
       });
     });

@@ -56,9 +56,9 @@ describe('Notification Routes', () => {
   describe('GET /notification/getall', () => {
     const route = '/notification/getall';
 
-    describe('given a userId in params', () => {
+    describe('given a key of userId & value of userId in params', () => {
       it('should respond with status 200', async () => {
-        const res = await request(router).get(`${route}/${testUser._id}`).send();
+        const res = await request(router).get(`${route}/userId/${testUser._id}`).send();
         expect(res.statusCode).toBe(200);
       });
     });
