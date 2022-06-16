@@ -28,7 +28,8 @@ const get = (req: Request, res: Response, next: NextFunction): void => {
   const requiredKeys: string[] = [];
   const allowedKeys: string[] = ['_id'];
   const minMaxKeys: string = '1/1';
-  const validationError = processValidation(minMaxKeys, req.params, requiredKeys, allowedKeys);
+  const query: object = { [req.params.key]: req.params.value };
+  const validationError = processValidation(minMaxKeys, query, requiredKeys, allowedKeys);
 
   if (validationError) {
     utils.responseHandler(res, 400, 'get game', undefined, validationError);
@@ -41,11 +42,8 @@ const get = (req: Request, res: Response, next: NextFunction): void => {
 const getAll = (req: Request, res: Response, next: NextFunction): void => {
   const requiredKeys: string[] = ['ownerId'];
   const minMaxKeys: string = '1/1';
-  const validationError = processValidation(
-    minMaxKeys,
-    { ownerId: req.params.ownerId },
-    requiredKeys
-  );
+  const query: object = { [req.params.key]: req.params.value };
+  const validationError = processValidation(minMaxKeys, query, requiredKeys);
 
   if (validationError) {
     utils.responseHandler(res, 400, 'get all games', undefined, validationError);

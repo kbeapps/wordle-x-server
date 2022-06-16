@@ -36,7 +36,7 @@ const get = async (req: Request, res: Response): Promise<void> => {
   let status: number = 200;
 
   try {
-    game = await controller.get(req.params);
+    game = await controller.get({ [req.params.key]: req.params.value });
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
@@ -49,7 +49,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
   let status: number = 200;
 
   try {
-    games = await controller.getAll(req.params.ownerId);
+    games = await controller.getAll({ [req.params.key]: req.params.value });
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
