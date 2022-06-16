@@ -24,7 +24,7 @@ const get = async (req: Request, res: Response): Promise<void> => {
   let group: IGroup = new Group();
 
   try {
-    group = await controller.get(req.body);
+    group = await controller.get({ [req.params.key]: req.params.value });
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
@@ -38,7 +38,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
   let groups: IGroup[] = [];
 
   try {
-    groups = await controller.getAll(req.body);
+    groups = await controller.getAll({ [req.params.key]: req.params.value });
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
