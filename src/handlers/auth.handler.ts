@@ -26,10 +26,21 @@ const confirmPassword = async (password: string, hash: string): Promise<boolean>
   }
 };
 
+const createUserPayload = (user: IUser): Partial<IUser> => {
+  return {
+    _id: user._id,
+    username: user.username,
+    friends: user.friends,
+    games: user.games,
+    groups: user.groups,
+  };
+};
+
 const signup = async (req: Request, res: Response): Promise<void> => {
   let message: string = '';
   let status: number = 200;
   let hashedPassword: string = '';
+  let user: IUser = new User();
 
   const isDupEmail = async (email: string): Promise<boolean> => {
     try {
@@ -72,7 +83,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
   if (!(await isDupEmail(req.body.email)) && !(await isDupUsername(req.body.username))) {
     try {
       hashedPassword = await hashPassword(req.body.password);
-      await userController.create(req.body.email, hashedPassword, req.body.username);
+      user = await userController.create(req.body.email, hashedPassword, req.body.username);
 
       // JWT eventually
       // Cookies eventually
@@ -83,7 +94,9 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
-  utils.responseHandler(res, status, 'signup', undefined, message);
+  const data = status === 200 ? createUserPayload(user) : undefined;
+
+  utils.responseHandler(res, status, 'signup', data, message);
 };
 
 const signin = async (req: Request, res: Response): Promise<void> => {
@@ -122,15 +135,9 @@ const signin = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
-  const data = passwordIsValid
-    ? {
-        friends: user.friends,
-        games: user.games,
-        groups: user.groups,
-      }
-    : null;
+  const data = status === 200 ? createUserPayload(user) : undefined;
 
-  utils.responseHandler(res, status, 'signin', data ? data : undefined, message);
+  utils.responseHandler(res, status, 'signin', data, message);
 };
 
 export { signup, signin };
