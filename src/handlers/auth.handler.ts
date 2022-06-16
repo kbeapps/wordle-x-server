@@ -97,10 +97,9 @@ const signin = async (req: Request, res: Response): Promise<void> => {
     : { username: req.body.username };
 
   try {
-    const foundUser = await userController.get(userQuery);
-    if (foundUser) {
-      user = foundUser;
-    } else {
+    user = await userController.get(userQuery);
+
+    if (!user) {
       message = 'user not found';
       status = 400;
     }
@@ -109,7 +108,7 @@ const signin = async (req: Request, res: Response): Promise<void> => {
     status = 500;
   }
 
-  if (Object.keys(user).length > 1) {
+  if (user) {
     try {
       passwordIsValid = await confirmPassword(req.body.password, user.password);
     } catch (err) {
