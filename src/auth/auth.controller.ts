@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import bcrypt from 'bcrypt';
 import * as dotenv from 'dotenv';
+import { hash, genSalt, compare } from 'bcrypt';
 import { AuthService } from './auth.service';
 import {
   EmailSigninDto,
@@ -18,8 +18,8 @@ export class AuthController {
 
   private async hashPass(password: string): Promise<string> {
     try {
-      const salt = await bcrypt.genSalt(Number(process.env.SALTROUNDS));
-      return await bcrypt.hash(password, salt);
+      const salt = await genSalt(Number(process.env.SALTROUNDS));
+      return await hash(password, salt);
     } catch (error) {
       throw new Error(`err in hashPass: ${error}`);
     }
@@ -30,13 +30,13 @@ export class AuthController {
     hash: string,
   ): Promise<boolean> {
     try {
-      return await bcrypt.compare(password, hash);
+      return await compare(password, hash);
     } catch (error) {
       throw new Error(`err in isValidPassword: ${error}`);
     }
   }
 
-  @Post('/signup')
+  @Post('signup')
   public async signup(@Body() signupDto: SignupAuthDto): Promise<User> {
     try {
       const hashedPass: string = await this.hashPass(signupDto.password);
@@ -46,20 +46,21 @@ export class AuthController {
     }
 
     try {
+      console.log('here');
       return await this.authService.signup(signupDto);
     } catch (error) {
       // create error handling for email or username taken in error handler instead of creating functions for checking
-      throw new Error(String(error));
+      throw new Error(error);
     }
   }
 
-  @Post('/signin')
+  @Post('signin')
   public async signin(@Body() signinAuthDto: SigninAuthDto) {
-    let user = signinAuthDto;
+    let user: EmailSigninDto | UsernameSigninDto;
 
-    if (signinAuthDto.email) {
-      user = signinAuthDto;
-    }
+    signinAuthDto.email
+      ? (user = signinAuthDto as EmailSigninDto)
+      : (user = signinAuthDto as UsernameSigninDto);
 
     return user;
   }

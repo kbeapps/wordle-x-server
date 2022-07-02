@@ -13,7 +13,8 @@ export class User {
   @Prop({ required: true, unique: true, minLength: 5, maxLength: 16 })
   username: string;
 
-  @Prop({ required: true, minLength: 5, maxLength: 20 })
+  // TODO add password max length validation elsewhere (maxLength: 20)
+  @Prop({ required: true, minLength: 5 })
   password: string;
 
   @Prop()

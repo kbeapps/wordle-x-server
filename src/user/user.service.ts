@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Model, MongooseError } from 'mongoose';
+import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/user/schema/user.schema';
 import { SignupAuthDto } from 'src/auth/dto/signup-auth.dto';
@@ -16,8 +16,8 @@ export class UserService {
       delete user.password;
       return await this.userModel.create(user);
     } catch (error) {
-      if (error instanceof MongooseError) {
-      }
+      // if (error instanceof MongooseError) {
+      // }
       throw new Error(String(error));
     }
   }
