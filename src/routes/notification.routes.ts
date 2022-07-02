@@ -6,7 +6,7 @@ import { validateCookies } from '../middleware/validators/cookies.validator';
 const router = Router();
 
 router.post('/create', [validateCookies, validator.create], handler.create);
-router.get('/getall/:key/:value', [validateCookies, validator.getAll], handler.getAll);
+router.get('/getall/:key/:value', [validateCookies], handler.getAll);
 router.delete('/remove/:_id', [validateCookies, validator.remove], handler.remove);
 router.delete('/removeall/:userId', [validateCookies, validator.removeAll], handler.removeAll);
 

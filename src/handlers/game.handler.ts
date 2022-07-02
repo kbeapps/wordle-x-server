@@ -49,7 +49,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
   let status: number = 200;
 
   try {
-    games = await controller.getAll({ [req.params.key]: req.params.value });
+    games = await controller.getAll(req.cookies._id);
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));

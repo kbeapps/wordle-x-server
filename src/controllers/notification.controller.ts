@@ -14,9 +14,9 @@ const create = async (userId: string, message: string): Promise<INotification> =
   }
 };
 
-const getAll = async (query: object): Promise<INotification[]> => {
+const getAll = async (userId: string): Promise<INotification[]> => {
   try {
-    return (await Notification.find(query)) as INotification[];
+    return (await Notification.findById(userId)) as INotification[];
   } catch (err) {
     throw new Error(String(err));
   }

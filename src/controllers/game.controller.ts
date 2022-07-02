@@ -41,9 +41,9 @@ const get = async (query: object): Promise<IGame> => {
   }
 };
 
-const getAll = async (query: object): Promise<IGame[]> => {
+const getAll = async (ownerId: string): Promise<IGame[]> => {
   try {
-    return (await Game.find(query)) as IGame[];
+    return (await Game.find({ ownerId: ownerId })) as IGame[];
   } catch (err) {
     throw new Error(String(err));
   }
