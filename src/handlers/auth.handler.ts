@@ -102,7 +102,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
-  res.cookie('id', user._id, cookieParams);
+  res.cookie('_id', user._id, cookieParams);
 
   const data = status === 200 ? createUserPayload(user) : undefined;
 
@@ -145,7 +145,7 @@ const signin = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
-  res.cookie('id', user._id, cookieParams);
+  res.cookie('_id', user._id, cookieParams);
 
   const data = status === 200 ? createUserPayload(user) : undefined;
 
