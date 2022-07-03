@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto, FindUserDto } from './dto/';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/user/schema/user.schema';
@@ -16,8 +16,6 @@ export class UserService {
       delete user.password;
       return await this.userModel.create(user);
     } catch (error) {
-      // if (error instanceof MongooseError) {
-      // }
       throw new Error(String(error));
     }
   }
@@ -26,17 +24,20 @@ export class UserService {
     return `This action returns all users`;
   }
 
-  public async findOne(id: string): Promise<User> {
+  public async findOne(query: FindUserDto): Promise<User> {
     try {
-      return await this.userModel.findOne({ _id: id });
+      return await this.userModel.findOne(query);
     } catch (error) {
       throw new Error(String(error));
     }
   }
 
-  public async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  public async update(updateUserDto: UpdateUserDto): Promise<User> {
+    const userId: string = updateUserDto._id;
+    delete updateUserDto._id;
+
     try {
-      return await this.userModel.findByIdAndUpdate(updateUserDto, {
+      return await this.userModel.findByIdAndUpdate(userId, updateUserDto, {
         new: true,
       });
     } catch (error) {

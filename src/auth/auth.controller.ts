@@ -38,19 +38,42 @@ export class AuthController {
 
   @Post('signup')
   public async signup(@Body() signupDto: SignupAuthDto): Promise<User> {
-    try {
-      const hashedPass: string = await this.hashPass(signupDto.password);
-      signupDto.password = hashedPass;
-    } catch (error) {
-      throw new Error(String(error));
+    let message = '';
+    let status = 200;
+
+    const isEmailTaken = await this.authService.isEmailTaken(signupDto.email);
+
+    const isUsernameTaken = await this.authService.isUsernameTaken(
+      signupDto.username,
+    );
+
+    if (isEmailTaken) {
+      message = 'email already in use.';
+      status = 400;
+      throw new Error('email already in use.');
     }
 
-    try {
-      console.log('here');
-      return await this.authService.signup(signupDto);
-    } catch (error) {
-      // create error handling for email or username taken in error handler instead of creating functions for checking
-      throw new Error(error);
+    if (isUsernameTaken) {
+      message = 'username already in use.';
+      status = 400;
+      throw new Error('username already in use.');
+    }
+
+    if (!isEmailTaken && !isUsernameTaken) {
+      try {
+        const hashedPass: string = await this.hashPass(signupDto.password);
+        signupDto.password = hashedPass;
+      } catch (error) {
+        throw new Error(String(error));
+      }
+
+      try {
+        console.log('here');
+        return await this.authService.signup(signupDto);
+      } catch (error) {
+        // TODO create error handling for email or username taken in error handler instead of creating functions for checking
+        throw new Error(error);
+      }
     }
   }
 

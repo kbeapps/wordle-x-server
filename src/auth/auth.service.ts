@@ -8,6 +8,32 @@ import { EmailSigninDto, UsernameSigninDto } from './dto/signin-auth.dto';
 export class AuthService {
   constructor(private userService: UserService) {}
 
+  public async isEmailTaken(email: string): Promise<boolean> {
+    try {
+      const emailInUse = await this.userService.findOne({ email: email });
+
+      return emailInUse ? true : false;
+    } catch (error) {
+      console.log(error);
+    }
+
+    return false;
+  }
+
+  public async isUsernameTaken(username: string): Promise<boolean> {
+    try {
+      const usernameInUse = await this.userService.findOne({
+        username: username,
+      });
+
+      return usernameInUse ? true : false;
+    } catch (error) {
+      console.log(error);
+    }
+
+    return false;
+  }
+
   public async signup(signupDto: SignupAuthDto): Promise<User> {
     try {
       const user: User = await this.userService.create(signupDto);
