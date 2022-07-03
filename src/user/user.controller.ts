@@ -13,7 +13,7 @@ import { FindUserDto, UpdateUserDto } from './dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post('create')
   create(signupDto: SignupAuthDto) {
@@ -35,8 +35,8 @@ export class UserController {
     return this.userService.update(updateuserDto);
   }
 
-  @Delete('remove/:id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  @Delete('remove/:_id')
+  remove(@Param('_id') _id: string) {
+    return this.userService.remove(_id);
   }
 }

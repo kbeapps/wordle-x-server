@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { User } from 'src/user/schema/user.schema';
 
-export type GroupSchema = Group & Document;
+export type GroupDocument = Group & Document;
 
 @Schema({ timestamps: true })
 export class Group {
