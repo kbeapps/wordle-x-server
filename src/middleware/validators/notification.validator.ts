@@ -15,20 +15,6 @@ const create = (req: Request, res: Response, next: NextFunction): void => {
   next();
 };
 
-const getAll = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = ['userId'];
-  const minMaxKeys: string = '1/1';
-  const query: object = { [req.params.key]: req.params.value };
-  const validationError = processValidation(minMaxKeys, query, requiredKeys);
-
-  if (validationError) {
-    utils.responseHandler(res, 400, 'getAll', undefined, validationError);
-    return;
-  }
-
-  next();
-};
-
 const remove = (req: Request, res: Response, next: NextFunction): void => {
   const requiredKeys: string[] = ['_id'];
   const minMaxKeys: string = '1/1';
@@ -55,4 +41,4 @@ const removeAll = (req: Request, res: Response, next: NextFunction): void => {
   next();
 };
 
-export { create, getAll, remove, removeAll };
+export { create, remove, removeAll };

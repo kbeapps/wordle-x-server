@@ -1,4 +1,4 @@
-import { Response, Request } from 'express';
+import { Response, Request, CookieOptions } from 'express';
 import userController from '../controllers/user.controller';
 import User, { IUser } from '../models/user.model';
 import bcrypt from 'bcrypt';
@@ -8,6 +8,14 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const source: string = 'authMiddleware';
+
+const cookieParams: CookieOptions = {
+  maxAge: 3 * 24 * 60 * 60 * 1000,
+  sameSite: 'none',
+  path: '/',
+  secure: true,
+  httpOnly: true,
+};
 
 const hashPassword = async (password: string): Promise<string> => {
   try {
@@ -86,13 +94,15 @@ const signup = async (req: Request, res: Response): Promise<void> => {
       user = await userController.create(req.body.email, hashedPassword, req.body.username);
 
       // JWT eventually
-      // Cookies eventually
+
       message = 'User created';
     } catch (err) {
       utils.errHandler(source, String(err));
       status = 500;
     }
   }
+
+  res.cookie('_id', user._id, cookieParams);
 
   const data = status === 200 ? createUserPayload(user) : undefined;
 
@@ -134,6 +144,8 @@ const signin = async (req: Request, res: Response): Promise<void> => {
       message = 'invalid password';
     }
   }
+
+  res.cookie('_id', user._id, cookieParams);
 
   const data = status === 200 ? createUserPayload(user) : undefined;
 

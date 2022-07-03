@@ -24,7 +24,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
   let status: number = 200;
 
   try {
-    notifications = await controller.getAll({ [req.params.key]: req.params.value });
+    notifications = await controller.getAll(req.cookies._id);
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
@@ -50,7 +50,7 @@ const removeAll = async (req: Request, res: Response): Promise<void> => {
   let status: number = 200;
 
   try {
-    await controller.removeAll(req.params.userId);
+    await controller.removeAll(req.cookies.userId);
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));

@@ -14,6 +14,14 @@ const create = async (email: string, password: string, username: string): Promis
   }
 };
 
+const getById = async (userId: string): Promise<IUser> => {
+  try {
+    return (await User.findById(userId)) as IUser;
+  } catch (err) {
+    throw new Error(String(err));
+  }
+};
+
 const get = async (query: object): Promise<IUser> => {
   try {
     return (await User.findOne(query)) as IUser;
@@ -41,6 +49,7 @@ const remove = async (_id: string): Promise<IUser> => {
 export default {
   create,
   get,
+  getById,
   update,
   remove,
 };

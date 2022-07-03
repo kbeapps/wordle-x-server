@@ -22,9 +22,9 @@ const get = async (query: object): Promise<IGroup> => {
   }
 };
 
-const getAll = async (query: object): Promise<IGroup[]> => {
+const getAll = async (ownerId: string): Promise<IGroup[]> => {
   try {
-    return (await Group.find(query)) as IGroup[];
+    return (await Group.find({ ownerId: ownerId })) as IGroup[];
   } catch (err) {
     throw new Error(String(err));
   }

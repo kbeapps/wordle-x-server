@@ -38,7 +38,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
   let groups: IGroup[] = [];
 
   try {
-    groups = await controller.getAll({ [req.params.key]: req.params.value });
+    groups = await controller.getAll(req.cookies._id);
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
