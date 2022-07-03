@@ -1,4 +1,4 @@
-import { Response, Request } from 'express';
+import { Response, Request, CookieOptions } from 'express';
 import userController from '../controllers/user.controller';
 import User, { IUser } from '../models/user.model';
 import bcrypt from 'bcrypt';
@@ -8,6 +8,14 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const source: string = 'authMiddleware';
+
+const cookieParams: CookieOptions = {
+  maxAge: 3 * 24 * 60 * 60 * 1000,
+  sameSite: 'none',
+  path: '/',
+  secure: true,
+  httpOnly: true,
+};
 
 const hashPassword = async (password: string): Promise<string> => {
   try {
@@ -26,10 +34,21 @@ const confirmPassword = async (password: string, hash: string): Promise<boolean>
   }
 };
 
+const createUserPayload = (user: IUser): Partial<IUser> => {
+  return {
+    _id: user._id,
+    username: user.username,
+    friends: user.friends,
+    games: user.games,
+    groups: user.groups,
+  };
+};
+
 const signup = async (req: Request, res: Response): Promise<void> => {
   let message: string = '';
   let status: number = 200;
   let hashedPassword: string = '';
+  let user: IUser = new User();
 
   const isDupEmail = async (email: string): Promise<boolean> => {
     try {
@@ -72,10 +91,10 @@ const signup = async (req: Request, res: Response): Promise<void> => {
   if (!(await isDupEmail(req.body.email)) && !(await isDupUsername(req.body.username))) {
     try {
       hashedPassword = await hashPassword(req.body.password);
-      await userController.create(req.body.email, hashedPassword, req.body.username);
+      user = await userController.create(req.body.email, hashedPassword, req.body.username);
 
       // JWT eventually
-      // Cookies eventually
+
       message = 'User created';
     } catch (err) {
       utils.errHandler(source, String(err));
@@ -83,7 +102,11 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
-  utils.responseHandler(res, status, 'signup', undefined, message);
+  res.cookie('_id', user._id, cookieParams);
+
+  const data = status === 200 ? createUserPayload(user) : undefined;
+
+  utils.responseHandler(res, status, 'signup', data, message);
 };
 
 const signin = async (req: Request, res: Response): Promise<void> => {
@@ -97,10 +120,9 @@ const signin = async (req: Request, res: Response): Promise<void> => {
     : { username: req.body.username };
 
   try {
-    const foundUser = await userController.get(userQuery);
-    if (foundUser) {
-      user = foundUser;
-    } else {
+    user = await userController.get(userQuery);
+
+    if (!user) {
       message = 'user not found';
       status = 400;
     }
@@ -109,7 +131,7 @@ const signin = async (req: Request, res: Response): Promise<void> => {
     status = 500;
   }
 
-  if (Object.keys(user).length > 1) {
+  if (user) {
     try {
       passwordIsValid = await confirmPassword(req.body.password, user.password);
     } catch (err) {
@@ -123,15 +145,11 @@ const signin = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
-  const data = passwordIsValid
-    ? {
-        friends: user.friends,
-        games: user.games,
-        groups: user.groups,
-      }
-    : null;
+  res.cookie('_id', user._id, cookieParams);
 
-  utils.responseHandler(res, status, 'signin', data ? data : undefined, message);
+  const data = status === 200 ? createUserPayload(user) : undefined;
+
+  utils.responseHandler(res, status, 'signin', data, message);
 };
 
 export { signup, signin };

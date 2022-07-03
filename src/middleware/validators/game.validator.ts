@@ -3,15 +3,7 @@ import utils from '../../utils';
 import { processValidation } from './helpers/process-validation.helpers';
 
 const create = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = [
-    'name',
-    'ownerId',
-    'players',
-    'wordHistory',
-    'type',
-    'winCondition',
-    'wordSize',
-  ];
+  const requiredKeys: string[] = ['name', 'ownerId', 'players', 'wordHistory', 'type', 'winCondition', 'wordSize'];
   const allowedKeys: string[] = ['theme'];
   const minMaxKeys: string = '7/8';
   const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
@@ -28,7 +20,8 @@ const get = (req: Request, res: Response, next: NextFunction): void => {
   const requiredKeys: string[] = [];
   const allowedKeys: string[] = ['_id'];
   const minMaxKeys: string = '1/1';
-  const validationError = processValidation(minMaxKeys, req.params, requiredKeys, allowedKeys);
+  const query: object = { [req.params.key]: req.params.value };
+  const validationError = processValidation(minMaxKeys, query, requiredKeys, allowedKeys);
 
   if (validationError) {
     utils.responseHandler(res, 400, 'get game', undefined, validationError);
@@ -38,34 +31,9 @@ const get = (req: Request, res: Response, next: NextFunction): void => {
   next();
 };
 
-const getAll = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = ['ownerId'];
-  const minMaxKeys: string = '1/1';
-  const validationError = processValidation(
-    minMaxKeys,
-    { ownerId: req.params.ownerId },
-    requiredKeys
-  );
-
-  if (validationError) {
-    utils.responseHandler(res, 400, 'get all games', undefined, validationError);
-    return;
-  }
-
-  next();
-};
-
 const update = (req: Request, res: Response, next: NextFunction): void => {
   const requiredKeys: string[] = ['_id'];
-  const allowedKeys: string[] = [
-    'name',
-    'players',
-    'wordHistory',
-    'boards',
-    'type',
-    'winCondition',
-    'wordSize',
-  ];
+  const allowedKeys: string[] = ['name', 'players', 'wordHistory', 'boards', 'type', 'winCondition', 'wordSize'];
   const minMaxKeys: string = '2/8';
   const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
 
@@ -90,4 +58,4 @@ const remove = (req: Request, res: Response, next: NextFunction): void => {
   next();
 };
 
-export { create, get, getAll, update, remove };
+export { create, get, update, remove };

@@ -29,20 +29,6 @@ const get = (req: Request, res: Response, next: NextFunction): void => {
   next();
 };
 
-const getAll = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = [];
-  const allowedKeys: string[] = ['userId', 'ownerId'];
-  const minMaxKeys: string = '1/1';
-  const validationError = processValidation(minMaxKeys, req.params, requiredKeys, allowedKeys);
-
-  if (validationError) {
-    utils.responseHandler(res, 400, 'get all groups', undefined, validationError);
-    return;
-  }
-
-  next();
-};
-
 const update = (req: Request, res: Response, next: NextFunction): void => {
   const requiredKeys: string[] = ['_id'];
   const allowedKeys: string[] = ['groupName', 'members'];
@@ -70,4 +56,4 @@ const remove = (req: Request, res: Response, next: NextFunction): void => {
   next();
 };
 
-export { create, get, getAll, update, remove };
+export { create, get, update, remove };

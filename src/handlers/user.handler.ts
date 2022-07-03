@@ -10,7 +10,21 @@ const get = async (req: Request, res: Response): Promise<void> => {
   let user: IUser = new User();
 
   try {
-    user = await controller.get(req.body);
+    user = await controller.get({ [req.params.key]: req.params.value });
+  } catch (err) {
+    status = 500;
+    utils.errHandler(source, String(err));
+  }
+
+  utils.responseHandler(res, status, 'getUser', user);
+};
+
+const getById = async (req: Request, res: Response): Promise<void> => {
+  let status: number = 200;
+  let user: IUser = new User();
+
+  try {
+    user = await controller.getById(req.cookies._id);
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
@@ -24,10 +38,9 @@ const update = async (req: Request, res: Response): Promise<void> => {
   let user: IUser = new User();
 
   const query = { ...req.body };
-  delete query._id;
 
   try {
-    user = await controller.update(req.body._id, query);
+    user = await controller.update(req.cookies._id, query);
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
@@ -40,7 +53,7 @@ const remove = async (req: Request, res: Response): Promise<void> => {
   let status: number = 200;
 
   try {
-    await controller.remove(req.params._id);
+    await controller.remove(req.cookies._id);
   } catch (err) {
     status = 500;
     utils.errHandler(source, String(err));
@@ -49,4 +62,4 @@ const remove = async (req: Request, res: Response): Promise<void> => {
   utils.responseHandler(res, status, 'removeUser');
 };
 
-export { get, update, remove };
+export { get, getById, update, remove };

@@ -66,9 +66,9 @@ describe('Group Routes', () => {
   describe('GET /group/get', () => {
     const route = '/group/get';
 
-    describe('Given a Group ID', () => {
+    describe('Given a key of _id and value of Group ID in params', () => {
       it('should respond with status 200', async () => {
-        const res = await request(router).get(route).send({ _id: testGroup._id });
+        const res = await request(router).get(`${route}/_id/${testGroup._id}`).send();
         expect(res.statusCode).toBe(200);
       });
     });

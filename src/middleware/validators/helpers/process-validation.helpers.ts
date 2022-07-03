@@ -1,7 +1,7 @@
 const EMAIL_VERIFICATION_REGEX = /^([a-zA-Z0-9-.]+)@([a-zA-Z0-9-.]+).([a-zA-Z]{2,5})$/;
 const PASSWORD_VERIFICATION_REGEX = /^[a-zA-Z0-9_.!@$%&(){}:;<>,?+=|-]{5,20}$/;
 const ID_VERIFICATION_REGEX = /^[a-zA-Z0-9]{24,24}$/;
-const USERNAME_VERIFICATION_REGEX = /^[a-zA-Z0-9_.!@$%&(){}:;<>,?+=|-]{0,}$/;
+const USERNAME_VERIFICATION_REGEX = /^[a-zA-Z0-9_.-]{0,}$/;
 const DEFAULT_REGEX = /^[a-zA-Z0-9_.!@$%&(){}:;<>, ?+=|-]{0,}$/;
 
 const checkKeys = (bodyKeys: string[], requiredKeys: string[], allowedKeys?: string[]): boolean => {
@@ -83,17 +83,15 @@ const checkAllowedValueTypes = (body: object): string => {
     'friends',
     'groups',
   ];
+  const objectIdTypeKeys: string[] = ['_id', 'gameId', 'ownerId', 'userId'];
   const stringTypeKeys: string[] = [
-    '_id',
     'name',
     'email',
     'username',
     'type',
     'winCondition',
-    'ownerId',
     'theme',
     'groupName',
-    'userId',
     'message',
     'password',
     'avatar',
@@ -137,6 +135,17 @@ const checkAllowedValueTypes = (body: object): string => {
           res = createMessage(key, reqType, arrError);
         }
         break;
+      }
+      case objectIdTypeKeys.includes(key): {
+        res =
+          valueToCheckType !== 'string'
+            ? createMessage(key, reqType, valueToCheckType)
+            : !stringIsValid(valueToCheck, key)
+            ? `invalid characters for key: ${key}`
+            : // 24 is length of mongoose object id
+            valueToCheck.length !== 24
+            ? `invalid length for objectId key: ${key}`
+            : res;
       }
       case stringTypeKeys.includes(key): {
         reqType = 'string';
