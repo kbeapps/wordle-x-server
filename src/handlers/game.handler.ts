@@ -33,39 +33,64 @@ const create = async (req: Request, res: Response): Promise<void> => {
 	utils.responseHandler(res, status, 'createGame', game);
 };
 
-const createMainDaily = async () => {
+const createMainDaily = async (req: Request, res: Response): Promise<void> => {
 	let status: number = 200;
+	let game: IGame = new Game();
 	let dailyOwner: IUser = new User();
+	let users: IUser[] = [];
 
 	const mainDailyGame = await controller.get({ name: 'main daily' });
 
 	try {
 		dailyOwner = await userController.get({ name: 'admin' });
 	} catch (error) {
-		console.log('Something is wrong');
+		status = 500;
+		utils.errHandler(source, String(error));
 	}
 
 	if (!mainDailyGame && dailyOwner._id) {
-		const createDailyGame: IGame = {
-			name: 'main daily',
-			ownerId: dailyOwner._id,
-			players: [],
-			wordHistory: [],
-			boards: [],
-			wordSize: 5,
-			type: '',
-			winCondition: '',
-			theme: 'main daily',
-		};
+		let players: string[] = [];
 
-		// get all userId & add to players array
-		const users = userController.getAll();
+		try {
+			users = await userController.getAll();
+			players = users.map((user: IUser) => String(user._id));
+		} catch (error) {
+			status = 500;
+			utils.errHandler(source, String(error));
+		}
 
-		// update all users to have the daily game ID in games array
+		try {
+			game = (await controller.create(
+				'main daily',
+				String(dailyOwner._id),
+				players,
+				[],
+				'daily',
+				'none',
+				'5'
+			)) as IGame;
+		} catch (error) {
+			status = 500;
+			utils.errHandler(source, String(error));
+		}
+
+		try {
+			const updateUsers = await users.map((user) =>
+				userController.update(String(user._id), {
+					games: user.games?.push(String(game._id)),
+				})
+			);
+		} catch (error) {
+			status = 500;
+			utils.errHandler(source, String(error));
+		}
 	}
 
 	// retrieve random word from API for daily game
 	// set word for daily game
+	// update game
+
+	utils.responseHandler(res, status, 'createGame', game);
 };
 
 const get = async (req: Request, res: Response): Promise<void> => {
@@ -122,4 +147,4 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 	utils.responseHandler(res, status, 'deleteGame');
 };
 
-export { create, get, getAll, update, remove };
+export { create, createMainDaily, get, getAll, update, remove };
