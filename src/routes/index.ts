@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-
+import cookieParser from 'cookie-parser';
 import homeRoutes from './home.routes';
 import authRoutes from './auth.routes';
 import gameRoutes from './game.routes';
@@ -23,6 +23,7 @@ const router = express();
 
 router.use(cors(corsOptions));
 router.use(helmet());
+router.use(cookieParser());
 router.use(express.json());
 console.log('process: ', process.env.LOCAL_ORIGIN);
 router.use(function (req: Request, res: Response, next: NextFunction) {
