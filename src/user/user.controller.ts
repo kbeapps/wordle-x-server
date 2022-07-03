@@ -27,7 +27,16 @@ export class UserController {
 
   @Get('get/:key/:value')
   findOne(@Param() query: FindUserDto) {
-    return this.userService.findOne(query);
+    let status = 200;
+
+    try {
+      return this.userService.findOne(query);
+    } catch (err) {
+      status = 500;
+      // utils.errHandler(source, String(err));
+    }
+
+    // utils.responseHandler(res, status, 'getUser', user);
   }
 
   @Patch('update')
