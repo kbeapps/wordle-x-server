@@ -25,6 +25,14 @@ const get = async (query: object): Promise<IUser> => {
 	}
 };
 
+const getAll = async (): Promise<IUser[]> => {
+	try {
+		return (await User.find()) as IUser[];
+	} catch (err) {
+		throw new Error(String(err));
+	}
+};
+
 const update = async (_id: string, query: object): Promise<IUser> => {
 	try {
 		return (await User.findByIdAndUpdate(_id, query, { new: true })) as IUser;
@@ -45,6 +53,7 @@ export default {
 	create,
 	get,
 	getById,
+	getAll,
 	update,
 	remove,
 };

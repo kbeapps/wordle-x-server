@@ -49,6 +49,24 @@ const getById = async (req: Request, res: Response): Promise<void> => {
 	utils.responseHandler(res, status, 'getUser', payload);
 };
 
+const getAll = async (req: Request, res: Response): Promise<void> => {
+	let status: number = 200;
+	let users: IUser[] = [];
+	let payload;
+
+	try {
+		users = await controller.getAll();
+		payload = users.map((user: IUser) => user._id);
+
+		console.log(payload);
+	} catch (err) {
+		status = 500;
+		utils.errHandler(source, String(err));
+	}
+
+	utils.responseHandler(res, status, 'getUser', payload);
+};
+
 const update = async (req: Request, res: Response): Promise<void> => {
 	let status: number = 200;
 	let user: IUser = new User();
@@ -80,4 +98,4 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 	utils.responseHandler(res, status, 'removeUser');
 };
 
-export { get, getById, update, remove };
+export { get, getById, getAll, update, remove };
