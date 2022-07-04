@@ -5,6 +5,8 @@ import utils from '../utils';
 import * as dotenv from 'dotenv';
 import userController from '../controllers/user.controller';
 import User, { IUser } from '../models/user.model';
+// const axios = require('axios');
+import axios from 'axios';
 
 dotenv.config();
 
@@ -86,9 +88,22 @@ const createMainDaily = async (req: Request, res: Response): Promise<void> => {
 		}
 	}
 
-	// retrieve random word from API for daily game
-	// set word for daily game
-	// update game
+	const getWord = async () => {
+		return axios
+			.get('http://api.datamuse.com/words?sp=?????&max=50')
+			.then((res) => res.data[Math.floor(Math.random() * 49)].word);
+	};
+	const newWord = await getWord();
+	game.wordHistory.push(newWord);
+
+	try {
+		await controller.update(String(game._id), {
+			wordHistory: game.wordHistory,
+		});
+	} catch (error) {
+		status = 500;
+		utils.errHandler(source, String(error));
+	}
 
 	utils.responseHandler(res, status, 'createGame', game);
 };
