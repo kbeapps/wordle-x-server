@@ -20,8 +20,12 @@ export class UserService {
     }
   }
 
-  public findAll() {
-    return `This action returns all users`;
+  public findAll(): Promise<User[]> {
+    try {
+      return await this.userModel.find();
+    } catch (err) {
+      throw new Error(String(err));
+    }
   }
 
   public async findOne(query: FindUserDto): Promise<User> {
@@ -42,6 +46,20 @@ export class UserService {
       });
     } catch (error) {
       throw new Error(String(error));
+    }
+  }
+
+  public async addDailyToAllUsers(gameId: string): Promise<void> {
+    try {
+      await this.userModel.updateMany(
+        {},
+        { $push: { games: gameId } },
+        {
+          upsert: true,
+        },
+      );
+    } catch (err) {
+      throw new Error(String(err));
     }
   }
 
