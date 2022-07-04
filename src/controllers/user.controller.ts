@@ -41,6 +41,20 @@ const update = async (_id: string, query: object): Promise<IUser> => {
 	}
 };
 
+const addDailyToAllUsers = async (gameId: string): Promise<void> => {
+	try {
+		await User.updateMany(
+			{},
+			{ $push: { games: gameId } },
+			{
+				upsert: true,
+			}
+		);
+	} catch (err) {
+		throw new Error(String(err));
+	}
+};
+
 const remove = async (_id: string): Promise<IUser> => {
 	try {
 		return (await User.findByIdAndRemove(_id)) as IUser;
@@ -55,5 +69,6 @@ export default {
 	getById,
 	getAll,
 	update,
+	addDailyToAllUsers,
 	remove,
 };

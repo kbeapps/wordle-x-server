@@ -3,10 +3,6 @@ import controller from '../controllers/game.controller';
 import Game, { IGame } from '../models/game.model';
 import utils from '../utils';
 import * as dotenv from 'dotenv';
-import userController from '../controllers/user.controller';
-import User, { IUser } from '../models/user.model';
-// const axios = require('axios');
-import axios from 'axios';
 
 dotenv.config();
 
@@ -30,79 +26,6 @@ const create = async (req: Request, res: Response): Promise<void> => {
 	} catch (err) {
 		status = 500;
 		utils.errHandler(source, String(err));
-	}
-
-	utils.responseHandler(res, status, 'createGame', game);
-};
-
-const createMainDaily = async (req: Request, res: Response): Promise<void> => {
-	let status: number = 200;
-	let game: IGame = new Game();
-	let dailyOwner: IUser = new User();
-	let users: IUser[] = [];
-
-	const mainDailyGame = await controller.get({ name: 'main daily' });
-
-	try {
-		dailyOwner = await userController.get({ name: 'admin' });
-	} catch (error) {
-		status = 500;
-		utils.errHandler(source, String(error));
-	}
-
-	if (!mainDailyGame && dailyOwner._id) {
-		let players: string[] = [];
-
-		try {
-			users = await userController.getAll();
-			players = users.map((user: IUser) => String(user._id));
-		} catch (error) {
-			status = 500;
-			utils.errHandler(source, String(error));
-		}
-
-		try {
-			game = (await controller.create(
-				'main daily',
-				String(dailyOwner._id),
-				players,
-				[],
-				'daily',
-				'none',
-				'5'
-			)) as IGame;
-		} catch (error) {
-			status = 500;
-			utils.errHandler(source, String(error));
-		}
-
-		try {
-			const updateUsers = await users.map((user) =>
-				userController.update(String(user._id), {
-					games: user.games?.push(String(game._id)),
-				})
-			);
-		} catch (error) {
-			status = 500;
-			utils.errHandler(source, String(error));
-		}
-	}
-
-	const getWord = async () => {
-		return axios
-			.get('http://api.datamuse.com/words?sp=?????&max=50')
-			.then((res) => res.data[Math.floor(Math.random() * 49)].word);
-	};
-	const newWord = await getWord();
-	game.wordHistory.push(newWord);
-
-	try {
-		await controller.update(String(game._id), {
-			wordHistory: game.wordHistory,
-		});
-	} catch (error) {
-		status = 500;
-		utils.errHandler(source, String(error));
 	}
 
 	utils.responseHandler(res, status, 'createGame', game);
@@ -162,4 +85,4 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 	utils.responseHandler(res, status, 'deleteGame');
 };
 
-export { create, createMainDaily, get, getAll, update, remove };
+export { create, get, getAll, update, remove };
