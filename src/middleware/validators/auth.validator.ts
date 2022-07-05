@@ -3,30 +3,35 @@ import utils from '../../utils';
 import { processValidation } from './helpers/process-validation.helpers';
 
 const signup = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = ['email', 'password', 'username'];
-  const minMaxKeys: string = '3/3';
-  const validationError = processValidation(minMaxKeys, req.body, requiredKeys);
+	const requiredKeys: string[] = ['email', 'password', 'username'];
+	const minMaxKeys: string = '3/3';
+	const validationError = processValidation(minMaxKeys, req.body, requiredKeys);
 
-  if (validationError) {
-    utils.responseHandler(res, 400, 'signup', undefined, validationError);
-    return;
-  }
+	if (validationError) {
+		utils.responseHandler(res, 400, 'signup', undefined, validationError);
+		return;
+	}
 
-  next();
+	next();
 };
 
 const signin = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = ['password'];
-  const allowedKeys: string[] = ['email', 'username'];
-  const minMaxKeys: string = '2/3';
-  const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
+	const requiredKeys: string[] = ['password'];
+	const allowedKeys: string[] = ['email', 'username'];
+	const minMaxKeys: string = '2/3';
+	const validationError = processValidation(
+		minMaxKeys,
+		req.body,
+		requiredKeys,
+		allowedKeys
+	);
 
-  if (validationError) {
-    utils.responseHandler(res, 400, 'signin', undefined, validationError);
-    return;
-  }
+	if (validationError) {
+		utils.responseHandler(res, 400, 'signin', undefined, validationError);
+		return;
+	}
 
-  next();
+	next();
 };
 
 export { signup, signin };

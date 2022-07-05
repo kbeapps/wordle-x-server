@@ -3,32 +3,50 @@ import utils from '../../utils';
 import { processValidation } from './helpers/process-validation.helpers';
 
 const get = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = [];
-  const allowedKeys: string[] = ['email', 'username'];
-  const minMaxKeys: string = '1/1';
-  const query: object = { [req.params.key]: req.params.value };
-  const validationError = processValidation(minMaxKeys, query, requiredKeys, allowedKeys);
+	const requiredKeys: string[] = [];
+	const allowedKeys: string[] = ['email', 'username'];
+	const minMaxKeys: string = '1/1';
+	const query: object = { [req.params.key]: req.params.value };
+	const validationError = processValidation(
+		minMaxKeys,
+		query,
+		requiredKeys,
+		allowedKeys
+	);
 
-  if (validationError) {
-    utils.responseHandler(res, 400, 'get', undefined, validationError);
-    return;
-  }
+	if (validationError) {
+		utils.responseHandler(res, 400, 'get', undefined, validationError);
+		return;
+	}
 
-  next();
+	next();
 };
 
 const update = (req: Request, res: Response, next: NextFunction): void => {
-  const requiredKeys: string[] = [];
-  const allowedKeys: string[] = ['email', 'username', 'password', 'avatar', 'games', 'friends', 'groups'];
-  const minMaxKeys: string = '1/7';
-  const validationError = processValidation(minMaxKeys, req.body, requiredKeys, allowedKeys);
+	const requiredKeys: string[] = ['_id'];
+	const allowedKeys: string[] = [
+		'email',
+		'username',
+		'password',
+		'avatar',
+		'games',
+		'friends',
+		'groups',
+	];
+	const minMaxKeys: string = '2/7';
+	const validationError = processValidation(
+		minMaxKeys,
+		req.body,
+		requiredKeys,
+		allowedKeys
+	);
 
-  if (validationError) {
-    utils.responseHandler(res, 400, 'update', undefined, validationError);
-    return;
-  }
+	if (validationError) {
+		utils.responseHandler(res, 400, 'update', undefined, validationError);
+		return;
+	}
 
-  next();
+	next();
 };
 
 export { get, update };

@@ -5,10 +5,14 @@ import { validateCookies } from '../middleware/validators/cookies.validator';
 
 const router = Router();
 
-router.post('/create', [validateCookies, validator.create], handler.create);
-router.get('/get/:key/:value', [validateCookies, validator.get], handler.get);
+router.post('/create', [validator.create], handler.create);
+router.get('/get/:key/:value', [validator.get], handler.get);
 router.get('/getall', [validateCookies], handler.getAll);
-router.patch('/update', [validateCookies, validator.update], handler.update);
-router.delete('/remove/:_id', [validateCookies, validator.remove], handler.remove);
+router.patch('/update', [validator.update], handler.update);
+router.delete(
+	'/remove/:_id',
+	[validateCookies, validator.remove],
+	handler.remove
+);
 
 export default router;
